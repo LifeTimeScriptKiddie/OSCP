@@ -1,0 +1,5 @@
+Always start with numeration
+1.  Nmap: 
+    nmap -sC -sV -oA enum/nmap <ip> -p-
+2.  nmapAutomator
+    ./nmapAutomator full ip
