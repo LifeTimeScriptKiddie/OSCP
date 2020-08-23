@@ -4,8 +4,14 @@
 1. Recon/ Info gathering
     1.1  Nmap: 
         'nmap -sC -sV -oA enum/nmap <ip> -p-'
-    1.2  nmapAutomator
+    1.2  nmapAutomator  
         './nmapAutomator full ip'
+        https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
+                To user nmap scripts
+               git clone https://github.com/vulnersCom/nmap-vulners.git
+               cp *.nse /usr/share/nmap/scripts
+               nmap --script-updatedb
+               
     1.3 Linux
            find . -iname
            find . -name <name> -type 
