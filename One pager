@@ -228,11 +228,7 @@ Update searchsploit
                     # Verify the shell echo $0
                     # If the terminal is looking for wrong directory,  copy and paste $PATH
                         export PATH=$PATH:/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:
-                        
-                    
-            
-            
-            
+                                  
             echo $SHELL     #which shell? majority of time "rbash"
             echo $PATH      #Where is it located?
             set             #gather information--> but which type
@@ -241,11 +237,15 @@ Update searchsploit
             
         https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
         http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
-        
+    
     3.1 Linux
-        3.1.1 Enumeration Tools
-            Download https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
-            Send to the target via python -m SImpleHTTPServer <port>
+        3.1.1 Ref
+            https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+            https://guif.re/linuxeop
+            Dirtycow   https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs
+            Local Privilege Escalation Workshop — https://github.com/sagishahar/lpeworkshop
+            https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
+                        
         3.1.2 SUID 
             Copy /etc/passwd
             Use openssl to create hash 
@@ -268,16 +268,15 @@ Update searchsploit
                      Bruteforce SSH using the identified passwords and known users. 
                      hydra -l gibson -p zaq1xsw2cde3 10.11.1.71 ssh
              
-              
-            
-            
                          
         find / -name "file name" 2>/dev/null
         find / -perm -u=s -type f 2>/dev/null
         
  
-    3.2 Windows            ref: https://guif.re/windowseop#EoP%204:%20Pass%20the%20hash
-        4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
+    3.2 Windows            
+        ref:
+            https://guif.re/windowseop
+        3.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
             'Run whoami /priv'
             'Look for SeChangeNotifyPrivilege'       Bypass traverse checking             Enabled 
             'Download: https://github.com/turbo/zero2hero'
@@ -409,8 +408,7 @@ Post-Exploitation / Privilege Escalation
 
 Privilege Escalation Practice
 
-    Local Privilege Escalation Workshop — https://github.com/sagishahar/lpeworkshop
-    https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
+
 
 Extra Practice
 
