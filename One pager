@@ -206,7 +206,7 @@ Update searchsploit
                  
 
  
- 3.Priviliege Escalation
+ 3.Priviliege Escalation      Goal Restricted low-priv shell --> Unrestricted low-priv shell --> Unrestricted high-priv shell
     3.0 Restriced Shell excape  
             3.0.1 nc interactive shell
                     # In reverse shell 
@@ -224,7 +224,11 @@ Update searchsploit
                     # e.g. searchsploit apach james  35513.py
                     # Download and modify the python script. 
                     # Verify that the script is working
-                    # modify the payload in the script. 
+                    # Put bash reverse shell as the payload and catch it from the host using nc. 
+                    # Verify the shell echo $0
+                    # If the terminal is looking for wrong directory,  copy and paste $PATH
+                        export PATH=$PATH:/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:
+                        
                     
             
             
