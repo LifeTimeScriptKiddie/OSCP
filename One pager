@@ -1,4 +1,8 @@
-
+Update searchsploit 
+    searchsploit -u
+    apt -y install exploitdb exploitdb-papers   #time consuming, not needed for test, adding research papers. 
+    
+    
 
 
 1. Recon/ Info gathering
@@ -203,6 +207,37 @@
 
  
  3.Priviliege Escalation
+    3.0 Restriced Shell excape  
+            3.0.1 nc interactive shell
+                    # In reverse shell 
+                          python -c 'import pty; pty.spawn("/bin/bash")' 
+                          Ctrl-Z 
+                    #In Kali 
+                          stty raw -echo 
+                          fg 
+                    #In reverse shell 
+                          reset 
+                          export SHELL=bash 
+                          export TERM=xterm-256color 
+                          stty rows <num> columns <cols> 
+           3.0.2 Searchsploit for remote execution 
+                    # e.g. searchsploit apach james  35513.py
+                    # Download and modify the python script. 
+                    # Verify that the script is working
+                    # modify the payload in the script. 
+                    
+            
+            
+            
+            echo $SHELL     #which shell? majority of time "rbash"
+            echo $PATH      #Where is it located?
+            set             #gather information--> but which type
+            
+            
+            
+        https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
+        http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+        
     3.1 Linux
         3.1.1 Enumeration Tools
             Download https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
@@ -271,23 +306,7 @@ Linux file search
     find . -name <name> -type 
     
     
-nc interactive shell
 
-
-    # In reverse shell 
-      $ python -c 'import pty; pty.spawn("/bin/bash")' 
-      Ctrl-Z 
-
-
-    In Kali 
-       $stty raw -echo 
-       $ fg 
-
-    In reverse shell 
-       $ reset 
-       $ export SHELL=bash 
-       $ export TERM=xterm-256color 
-       $ stty rows <num> columns <cols> 
 
 
 
@@ -387,6 +406,7 @@ Post-Exploitation / Privilege Escalation
 Privilege Escalation Practice
 
     Local Privilege Escalation Workshop — https://github.com/sagishahar/lpeworkshop
+    https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
 
 Extra Practice
 
