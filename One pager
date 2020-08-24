@@ -1,6 +1,10 @@
    
 Pattern
-Reconnaissance --> Info gathering -->  Vulnerability Research --> Exploit --> Post-Exploit&&Privilege Escalation
+1. Reconnaissance
+2. Info gathering
+3. Vulnerability Research
+4. Exploit
+5. Post-Exploit&&Privilege Escalation
 
 
     
