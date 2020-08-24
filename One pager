@@ -33,11 +33,132 @@
             23 Telnet
                 hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet
                 patator
-                
-            25
+                                               
+            25 SMTP
+                Server to Server service.  Users receives/sends emails suing IMAP or POP3. 
+                Then routed to the SMTP server to communicate to another server. Has database. 
+                Cannot retrieve any emails, only can send email. 
+                    http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
+            69 - TFTP
+                ftp-server
+                UDP
+            80- HTTP
+                .htaccess can password protect certain directories. 
+                    Create a directory which will be password-protected. 
+                    Create .htaccess tile inside that directroy. Contents are as follows,
+                        AuthType Basic
+                        AuthType Basic
+                        AuthName "Password Protected Area"
+                        AuthUserFile /var/www/html/test/.htpasswd
+                        Require valid-user  
+                    Create .htpasswd file. Contents are as follows,
+                        htpasswd -cb .htpasswd test admin
+                        service apache2 restart
+                    If the directory does not display a login-prompt, change the apache2.conf as follows,
+                        <Directory /var/www/html/test>
+                            AllowOverride AuthConfig
+                        </Directory>
+                    Then, Bruceforce
+                        medusa -h 192.168.1.101 -u admin -P wordlist.txt -M http -m DIR:/test -T 10
+            88- Kerberos
+                Network Authentication protocol. 
+                Common for Windows Domain controller.
+                MS14-068
+            110 Pop3
+                telnet <ip> 110
+                USER pkong@<ip>
+                PASS admin
+                list   #List all emails
+                retr5  #Retrieve email number 5. 
+            111 Rpcbind
+                RFC 1833
+                Can be used to look for NFS-shares.
+                rpcbind -p <ip>
+            119 NNTP
+                Network time protocol, Synchronize time. 
+                    
+            135 MSRCP
+                nmap <ip> --script=msrpc-enum
+                    https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
+            139/ 445 SMB SAMBA
+                smbclient -L <ip>
+                smbclient //<ip>/tmp
+                smbclient \\\<ip>\\ipc$ -U pkong
+                smbclient //<ip>/ipc$ -U pkong
+                    mount -t cifs -o user=USERNAME,sec=ntlm,dir_mode=0077 "//10.10.10.10/My Share" /mnt/cifs
+                nmap -p 139,445 192.168.1.1/24 --script smb-enum-shares.nse smb-os-discovery.nse
+                enum4linux -a 192.168.1.120
+                rpcclient
+                    rpcclient -U "" 192.168.1.101
+                        srvinfo
+                        enumdomusers
+                        getdompwinfo
+                        querydominfo
+                        netshareenum
+                        netshareenumall
+            143/993 IMAP
+                Access email stored on that server from various devices. 
+            161-162 SNMP
+                Simple Network Managment Protocol
+                SNMP 1,2, and 2c clear text traffic. Credentials can be stolen.
+                Used to manage devices ona network. 
+                MIB- Management information base
+                snmpwalk -c public -v1 <ip>
+                    1.3.6.1.2.1.25.1.6.0 System Processes
+                    1.3.6.1.2.1.25.4.2.1.2 Running Programs
+                    1.3.6.1.2.1.25.4.2.1.4 Processes Path
+                    1.3.6.1.2.1.25.2.3.1.4 Storage Units
+                    1.3.6.1.2.1.25.6.3.1.2 Software Name
+                    1.3.6.1.4.1.77.1.2.25 User Accounts
+                    1.3.6.1.2.1.6.13.1.3 TCP Local Ports
+                snmp-check -t <ip> -c public
+                nmap -iL ips.txt -p 161,162 -sU --open -vvv -oG snmp-nmap.txt
+
+            199 - Smux
+            389/636 LDAP
+                Lightweight Directory Access Protocol   (More likely telephone-directory)
+                Database tree
+                Often in corporate structure, store user information, used for authentication(web application)
+                ldapsearch -h <ip> -p 389 -x -b "dc=mywebsite,dc=com"
+       
             
+            443- HTTPS
+                OpenSSL 1.0.1-1.0.1f Vulnerable
+                OpenSSL 1.0.1g, 1.0.0, 0.9.8 NOT vulnerable 
+                headrbleed? https://heartbleed.com/
+                sudo sslscan <IP>:443
+                nmap -sV --script=ssl-heartbleed <ip>
+                Certificate?
+            554-RTSP : Real Time Streaming Protocol
+                Statful (TCP)
+                IP-cameras, with potential GUI
+            587 Submission
+                OUtgoing smtp-port
+                If postfix is run, could be shellshock
+            631 Cups - Common UNIX Printing System
+                netstat
+                log in: http://localhost:631/admin
+                            993 IMAP encrypted
+            995 POP3 Encryption
+                110 is POP3 non-encrypted
+                25, 465
+            1025 - NSF or IIS
+            1030/1032/1033/1038
+                Used by the RPC within Windows Domain.
+            1433 MsSql
+                sqsh -S <ip> -U sa
+                    xp_cmdshell 'date'
+                    go                   
+            1521 Oracle database
+                Enumeration
+                    tnscmd10g version -h <ip>
+                    tnscmd10g status -h <ip>
+            1748,1754,1808,1809 Oracle
+                Orcales Intelligent Agent
              
-            
+            2049 -NFS
+                showmount -e <ip>
+                mount <ip>:/tmp/<location>
         
       
     
