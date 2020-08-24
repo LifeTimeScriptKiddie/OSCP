@@ -76,6 +76,7 @@
                 rpcbind -p <ip>
             119 NNTP
                 Network time protocol, Synchronize time. 
+                nc -nvC <ip> 119    # banner grabbing
                     
             135 MSRCP
                 nmap <ip> --script=msrpc-enum
@@ -159,6 +160,11 @@
             2049 -NFS
                 showmount -e <ip>
                 mount <ip>:/tmp/<location>
+            4555 James Remote Server
+                default userid:password
+                    root:root
+                    
+                
         
       
     
