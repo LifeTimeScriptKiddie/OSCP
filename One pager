@@ -286,7 +286,7 @@ Pattern
                   netsh firewall show config
                   schtasks /query /fo LIST /v
                   tasklist /SVC
-                  DRIVERQUERY
+                  DRIVERQUERY  --look for programs (afd..)
                   wmic qfe get Caption,Description,HotFixID,InstalledOn
                   wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
                   sc qc upnphost
@@ -494,7 +494,9 @@ Post-Exploitation / Privilege Escalation
     GTFOBins (Bypass local restrictions) — https://gtfobins.github.io/
     sudo_killer — https://github.com/TH3xACE/SUDO_KILLER
     https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md
-
+    https://medium.com/bugbountywriteup/privilege-escalation-in-windows-380bee3a2842
+    https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/
+    
 
 
 
