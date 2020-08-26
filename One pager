@@ -169,6 +169,11 @@ Pattern
             2049 -NFS
                 showmount -e <ip>
                 mount <ip>:/tmp/<location>
+                
+            3389 Remote Desktop
+                 rdesktop -u guest -p guest 10.11.1.5 -g 94%    
+                 Brute Force 
+                     ncrack -vv --user Administrator -P /root/passwords.txt rdp://192.168.1.101
             4555 James Remote Server
                 default userid:password
                     root:root
