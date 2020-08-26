@@ -367,6 +367,9 @@ Pattern
                       Host: rlwrap -r nc -nlvp 
            4.2.5 Lovely Potato - Automated Juicy Potato
                https://github.com/TsukiCTF/Lovely-Potato/tree/e21c3a95bd8421c9584533529f00966f3ea24071
+               
+           4.2.6  JAWS
+               https://github.com/411Hall/JAWS
                     
                     
     4.3.Priviliege Escalation      
