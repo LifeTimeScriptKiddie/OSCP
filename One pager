@@ -28,9 +28,12 @@ Pattern
            find . -name <name> -type 
     1.4 Windows
     
-    1.5 Common port
-        Unknown port
-            amap -d <ip> <port>
+    1.5 Ports
+        Unknown ports
+          amap -d <ip> <port>
+          or
+          http://www.0daysecurity.com/penetration-testing/enumeration.html
+        Common ports
             21 FTP
                 ftp <ip>
                 nc <ip> <port>
