@@ -51,6 +51,8 @@ Pattern
                 Then routed to the SMTP server to communicate to another server. Has database. 
                 Cannot retrieve any emails, only can send email. 
                     http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
+                telnet
+               
             69 - TFTP
                 ftp-server
                 UDP
@@ -86,6 +88,8 @@ Pattern
                 RFC 1833
                 Can be used to look for NFS-shares.
                 rpcbind -p <ip>
+                rpcinfo <IP>
+                
             119 NNTP
                 Network time protocol, Synchronize time. 
                 nc -nvC <ip> 119    # banner grabbing
@@ -95,6 +99,9 @@ Pattern
                     https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
             139/ 445 SMB SAMBA
                 smbclient -L <ip>
+                  Verify the version via wireshark or commnad
+                       ngrep -i -d tun0
+                       wireshark --> search for Session Setup ANDX Response
                 smbclient //<ip>/tmp
                 smbclient \\\<ip>\\ipc$ -U pkong
                 smbclient //<ip>/ipc$ -U pkong
@@ -109,6 +116,7 @@ Pattern
                         querydominfo
                         netshareenum
                         netshareenumall
+                
             143/993 IMAP
                 Access email stored on that server from various devices. 
             161-162 SNMP
