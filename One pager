@@ -98,6 +98,8 @@ Pattern
                 nmap <ip> --script=msrpc-enum
                     https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
             139/ 445 SMB SAMBA
+             2020 Kali default setting does not allow the legacy SMB protocols. Change it by /etc/samba/smb.conf  and add "client min protocol = LANMAN1" to the global section.
+            
                 smbclient -L <ip>
                   Verify the version via wireshark or commnad
                        ngrep -i -d tun0
