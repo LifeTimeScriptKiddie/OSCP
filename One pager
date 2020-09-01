@@ -450,6 +450,12 @@ Pattern
                
            4.2.6  JAWS
                https://github.com/411Hall/JAWS
+               
+           4.2.7 NTLM hashes/kerberos
+            https://gist.github.com/0xbadjuju/0ebe02983273048c237a8b24633cee3f
+            https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
+            
+            
                     
                     
   
