@@ -582,6 +582,9 @@ Extra Practice
     Local Privilege Escalation Workshop — https://github.com/sagishahar/lpeworkshop
          
 
+MSSQL injection
+https://www.exploit-db.com/papers/12975
+
 Update searchsploit 
     searchsploit -u
     apt -y install exploitdb exploitdb-papers   #time consuming, not needed for test, adding research papers
