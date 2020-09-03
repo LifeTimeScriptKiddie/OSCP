@@ -204,6 +204,13 @@ Pattern
                 'LFI - php?list=../../../../../../../../../../etc/shadow'
             1.6.1.1.2 Windows
                 'LFI -php?list=../../../../../../../../../../<>>>>'
+        1.6.1.2 SQL Injection     #Examine how the server behaves
+         https://dev.mysql.com/doc/refman/8.0/en/select.htmlhttps://dev.mysql.com/doc/refman/8.0/en/select.html
+         https://www.exploit-db.com/papers/12975
+            ' or '1'='1
+         
+                
+     
               
        
     1.6.2 Shellshock
@@ -581,9 +588,6 @@ Extra Practice
     Root-Me — https://www.root-me.org/
     Local Privilege Escalation Workshop — https://github.com/sagishahar/lpeworkshop
          
-
-MSSQL injection
-https://www.exploit-db.com/papers/12975
 
 Update searchsploit 
     searchsploit -u
