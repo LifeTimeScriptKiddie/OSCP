@@ -42,6 +42,11 @@ Pattern
             22 SSH
                 nc <ip> <port>  --> search for protocol http://www.openssh.com/txt/rfc4253.txt 
                 ssh ip
+                ref: https://weberblog.net/ssh-key-fingerprints/ 
+                     https://unix.stackexchange.com/questions/247612/ssh-keeps-skipping-my-pubkey-and-asking-for-a-password/247614 
+                     https://superuser.com/questions/929566/sha256-ssh-fingerprint-given-by-the-client-but-only-md5-fingerprint-known-for-se 
+                     Older openssh/openssl protocols: https://github.com/g0tmi1k/debian-ssh
+                     
             23 Telnet
                 hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet
                 patator
