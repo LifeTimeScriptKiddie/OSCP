@@ -110,6 +110,7 @@ Pattern
                 smbclient -L <ip>
                   Verify the version via wireshark or commnad
                        ngrep -i -d tun0
+                       ngrep -i -d tun0 's.?a.?m.?b.?a.*[[:digit:]]' 
                        wireshark --> search for Session Setup ANDX Response
                 smbclient //<ip>/tmp
                 smbclient \\\<ip>\\ipc$ -U pkong
