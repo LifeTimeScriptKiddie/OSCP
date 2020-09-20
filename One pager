@@ -218,6 +218,8 @@ Pattern
          https://www.tarlogic.com/en/blog/red-team-tales-0x01/
          https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
             ' or '1'='1
+         http://www.securityidiots.com/Web-Pentest/SQL-Injection/Union-based-Oracle-Injection.html
+         https://www.doyler.net/security-not-included/oracle-command-execution-sys-shell
          
                 
      
