@@ -1,16 +1,16 @@
    
 Pattern
-1. Reconnaissance
-2. Info gathering
-3. Vulnerability Research
-4. Exploit
-5. Post-Exploit&&Privilege Escalation
+1. Reconnaissance    # Identifing IP address, ports, services running
+2. Info gathering    # How much do i know regarding services which are running on the targer?
+3. Vulnerability Research    #explore identified services and the use of the target system
+4. Exploit                   # get low privilige shell
+5. Post-Exploit&&Privilege Escalation  # owned the target
 
 
     
 
 
-1. Recon
+1. Recon/ info gathering
     1.1  Nmap: 
         'nmap -sC -sV -oA enum/nmap <ip> -p-'
     1.2  nmapAutomator  
@@ -248,7 +248,10 @@ Pattern
               ps aux |grep mysql
               mysql -u<id> -p<password> -e 'show databases;'
 
-2.0 Information gathering              
+3.0 Vulnerability Research/ exploit
+ 3.1 Searchsploit
+ 3.2  exploitdb
+ 3.3  google
                
 
  
