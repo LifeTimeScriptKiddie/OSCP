@@ -615,3 +615,11 @@ Extra Practice
 Update searchsploit 
     searchsploit -u
     apt -y install exploitdb exploitdb-papers   #time consuming, not needed for test, adding research papers
+    
+    
+    
+pivot stuff
+https://0xdf.gitlab.io/2020/08/10/tunneling-with-chisel-and-ssf-update.html
+https://0xdf.gitlab.io/2019/01/28/pwk-notes-tunneling-update1.html
+https://www.puckiestyle.nl/pivot-with-chisel/
+https://github.com/jpillora/chisel
