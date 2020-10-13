@@ -519,9 +519,16 @@ Powershell command
     Download file 
     Invoke-WebRequest URL -OutFile c:\file.ext
     
+    
+    
+    
+    
+    
 Extra info,
+Don't know where to put those yet
 
-Don't know where to put yet
+https://www.netsecfocus.com/oscp/2019/03/29/The_Journey_to_Try_Harder-_TJNulls_Preparation_Guide_for_PWK_OSCP.html#section-6-buffer-overflows
+
 
 
 Reporting Frameworks
@@ -635,5 +642,6 @@ Compile
    go build 
 Reduce file size
    go build -ldfalgs="-s -w"
+   upx brute chiseldu 
    
 
