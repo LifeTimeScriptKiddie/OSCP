@@ -622,4 +622,18 @@ pivot stuff
 https://0xdf.gitlab.io/2020/08/10/tunneling-with-chisel-and-ssf-update.html
 https://0xdf.gitlab.io/2019/01/28/pwk-notes-tunneling-update1.html
 https://www.puckiestyle.nl/pivot-with-chisel/
-https://github.com/jpillora/chisel
+
+Port forwarding
+install Go 
+   https://golang.org/doc/install
+      tar -C /usr/local -xzf go1.15.2.linux-amd64.tar.gz
+      export PATH=$PATH:/usr/local/go/bin
+      go version
+Download chisel
+   git clone https://github.com/jpillora/chisel
+Compile
+   go build 
+Reduce file size
+   go build -ldfalgs="-s -w"
+   
+
