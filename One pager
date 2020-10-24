@@ -553,6 +553,7 @@ Network Tools
 File Transfers
 
     updog — https://github.com/sc0tfree/updog
+    scp - scp <id>@<ip>:<file location>/* ./
 
 Wordlists / Dictionaries
 
