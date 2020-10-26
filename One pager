@@ -12,7 +12,7 @@ Pattern
 
 1. Recon/ info gathering
     1.1  Nmap: 
-        'nmap -sC -sV -oA enum/nmap <ip> -p-'
+        'nmap -sC -sV -oN nmap.txt <ip> -p-'
     1.2  nmapAutomator  
         './nmapAutomator full ip'
         https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
