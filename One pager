@@ -381,7 +381,7 @@ Pattern
             https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
             https://raw.githubusercontent.com/reider-roque/linpostexp/master/linprivchecker.py
             https://raw.githubusercontent.com/jondonas/linux-exploit-suggester-2/master/linux-exploit-suggester-2.pl
-            
+            https://sushant747.gitbooks.io/total-oscp-guide/content/privilege_escalation_windows.html
        
         
    4.2 Windows           
@@ -389,6 +389,8 @@ Pattern
            ref  : https://samsclass.info/123/proj10/px16-hashcat-win.htm
                   https://guif.re/windowseop
                   https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
+                  https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Methodology%20and%20Resources
+                  
 
            Starts with whoami/priv
            
