@@ -525,7 +525,17 @@ https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
 Windows x86 Machine powershell location
     C:\Windows\System32\WindowsPowerShell\v1.0
     C:\Windows\SysWOW64\WindowsPowerShell\v1.0
+    
 Windows x64 Machine Powershell location
+
+To launch a 64-bit version of PowerShell:
+    From a 32-bit process, use path:
+    c:\windows\sysnative\WindowsPowerShell\v1.0\powershell.exe
+
+    From a 64-bit process, use path:
+    c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe
+
+
 
 Powershell command
     Download file 
