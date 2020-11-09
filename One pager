@@ -13,6 +13,9 @@ Pattern
 1. Recon/ info gathering
     1.1  Nmap: 
         'nmap -sC -sV -oN nmap.txt <ip> -p-'
+        locate 
+        grep -r categories /usr/share/nmap/scripts/*.nse |grep -oP '".*?"' |sort -u
+        locate <keywords> |grep .nse$      #search for nmap script
     1.2  nmapAutomator  
         './nmapAutomator full ip'
         https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
@@ -129,6 +132,14 @@ Pattern
                         querydominfo
                         netshareenum
                         netshareenumall
+                https://github.com/3ndG4me/AutoBlue-MS17-010
+                https://github.com/worawit/MS17-010.git     #without named pipe
+                https://github.com/mez-0/MS17-010-Python
+                
+                
+                
+                
+                
                 
             143/993 IMAP
                 Access email stored on that server from various devices. 
