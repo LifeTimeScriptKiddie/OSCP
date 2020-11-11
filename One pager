@@ -623,6 +623,9 @@ Post-Exploitation / Privilege Escalation
     PowerUp — https://github.com/HarmJ0y/PowerUp
     Linux Exploit Suggester — https://github.com/mzet-/linux-exploit-suggester
     Windows Exploit Suggester — https://github.com/bitsadmin/wesng
+        ./windows-exploit-suggester.py --update
+        ./windows-exploit-suggester.py --database <created fie>.xls --systeminfo sysinfo.txt      
+    
     Windows Privilege Escalation Awesome Scripts (WinPEAS) — https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS
     Linux Privilege Escalation Awesome Script (LinPEAS) — https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS
     GTFOBins (Bypass local restrictions) — https://gtfobins.github.io/
