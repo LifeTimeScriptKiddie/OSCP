@@ -516,9 +516,11 @@ Pattern
          powershell -exec bypass -command "& { Import-Module .\PowerUp.ps1; Invoke-AllChecks; }" 
          powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
                
-              
- 
-            
+         
+
+Drupal:
+   error message: ruby: warning: shebang line ending with \r may cause problems
+                dos2unix 
             
                     
                     
