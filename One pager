@@ -517,10 +517,13 @@ Pattern
          powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
                
          
+5.0 Tried exploits
+   Drupal 7.54
+      https://github.com/pimps/CVE-2018-7600
+      
 
-Drupal:
-   error message: ruby: warning: shebang line ending with \r may cause problems
-                dos2unix 
+   
+   
             
                     
                     
