@@ -218,8 +218,9 @@ Pattern
       
     
 1.6. Common Vulnerabilities
-    1.6.1 Web
+    1.6.1 Web Directory Traversal
         1.6.1.1 LFIs
+            https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/
             1.6.1.1.1 Linux 
                 'LFI - php?list=../../../../../../../../../../etc/shadow'
             1.6.1.1.2 Windows
