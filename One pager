@@ -35,6 +35,12 @@ Contents
     
                
 2.0 Linux OS
+   to compile x86 in x64 environment
+      sudo apt-get install gcc-multilib
+   with gdb
+      git clone https://github.com/longld/peda.git ~/peda
+      echo "source ~/peda/peda.py" >> ~/.gdbinit
+
 3.0 Windows OS
     
     
