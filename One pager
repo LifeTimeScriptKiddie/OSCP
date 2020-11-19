@@ -35,11 +35,23 @@ Contents
     
                
 2.0 Linux OS
-   to compile x86 in x64 environment
+   to compile x86 in linux x64 environment
       sudo apt-get install gcc-multilib
-   with gdb
-      git clone https://github.com/longld/peda.git ~/peda
-      echo "source ~/peda/peda.py" >> ~/.gdbinit
+      gcc -ggdb -z execstack -fno-stack-protector -m32 func.c -o func
+
+   turn off aslr
+       echo 0 > /proc/sys/kernel/randomize_va_space 
+
+   gdb
+      Install peda
+         git clone https://github.com/longld/peda.git ~/peda
+         echo "source ~/peda/peda.py" >> ~/.gdbinit
+      how to use
+         pdisass main     
+         pdiss <functionname>
+         getsec
+         
+      
 
 3.0 Windows OS
     
