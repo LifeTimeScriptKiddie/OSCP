@@ -50,6 +50,9 @@ Contents
          pdisass main     
          pdiss <functionname>
          getsec
+    
+    sudo -l
+      list what sudo can do
          
       
 
