@@ -406,11 +406,29 @@ Contents
                      Bruteforce SSH using the identified passwords and known users. 
                      hydra -l gibson -p zaq1xsw2cde3 10.11.1.71 ssh
                      
-
             sudo -l
                list what sudo can do
              watch w
                logged in users
+        process Enumeration
+            ps aux
+            ps -elf
+            pstree   #tree view
+            lsof     #list open file
+               lsof |less
+               lsof -p <pid>
+            ls -al /proc
+               ls -al /proc/<pid>
+               Restore deleted file.
+                  cp /proc/<pid>/exe ./<restored_file_name>
+            chkconfig          #sysV command
+        Services 
+            systemctl list-units --type service
+                  
+               
+            
+               
+            
 
       
       
@@ -474,25 +492,39 @@ Contents
                   
                   $ps
            Gathering information
+              System info
                   systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+              Userinfo
                   hostname
                   echo %username%
                   net users
                   net user user1
                   net group
+              Network
                   ipconfig /all
                   route print
                   arp -A
                   netstat -ano
                   netsh firewall show state
                   netsh firewall show config
+             Process
+                  net start
                   schtasks /query /fo LIST /v
                   tasklist /SVC
+                  tasklist /v
                   DRIVERQUERY  --look for programs (afd..)
                   wmic qfe get Caption,Description,HotFixID,InstalledOn
                   wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
                   wmic useraccount get name,sid
+                  wmic process get parentprocessid,commandline
+                  wmic process where processid=776 get parentprocessid, commandline
+                  wmic service list status
+                  wmic service list brief  
                   sc qc upnphost
+                  get-service
+                     get-service |where {$_.status -eq running}
+                  
+                  
                    
                   
 
