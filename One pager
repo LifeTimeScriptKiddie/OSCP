@@ -41,8 +41,18 @@ Contents
       
 
 3.0 Windows OS
-   
-    
+   reg
+      run keys, Run once keys 
+         HKLM:\software\microsoft\windows\currentversion\run 
+         HKCU:\software\microsoft\windows\currentversion\run 
+      Run Once keys  # run once and remove itself.  
+         HKLM:\software\microsoft\windows\currentversion\runOnce 
+         HKCU:\software\microsoft\windows\currentversion\runOnce 
+      service = process runs on background. svchost.  
+         HKLM:\system\currentcontrolset\services 
+         HKLM:\software\microsoft\windows NT\currentversion\winlogon 
+         HKLM:\software\microsoft\windows\currentversion\explore\shell folders 
+         HKLM:\software\microsoft\windows\currentversion\explore\user shell folders 
     
 4.0 Ports information
         Unknown ports
@@ -388,6 +398,8 @@ Contents
             /etc/passwd
                username, home directory, default shell.
             /etc/shadow
+            /etc/default
+            /etc/hosts
             last
                ls -al /var/log/wtemp
             /etc/apach2 or /etc/httpd
