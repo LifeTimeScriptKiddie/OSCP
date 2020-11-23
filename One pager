@@ -424,6 +424,16 @@ Contents
             chkconfig          #sysV command
         Services 
             systemctl list-units --type service
+        Network 
+            ifconfig -a
+            ip addr
+            ip route
+            netstat -anltp
+            netstat -r
+            ss
+            rp -an
+            route
+            
                   
                
             
@@ -507,6 +517,9 @@ Contents
                   netstat -ano
                   netsh firewall show state
                   netsh firewall show config
+                  wmic netuse list full
+                  net use    # to access shared resources. 
+                  net view
              Process
                   net start
                   schtasks /query /fo LIST /v
