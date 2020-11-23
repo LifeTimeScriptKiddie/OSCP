@@ -396,22 +396,19 @@ Contents
           
                                                                   
      Searchsploit for remote execution 
-                    # e.g. searchsploit apach james  35513.py
-                    # Download and modify the python script. 
-                    # Verify that the script is working
-                    # Put bash reverse shell as the payload and catch it from the host using nc. 
-                    # Verify the shell echo $0
-                    # If the terminal is looking for wrong directory,  copy and paste $PATH
-                        export PATH=$PATH:/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:
-                                  
-                    echo $SHELL     #which shell? majority of time "rbash"
-                    echo $PATH      #Where is it located?
-                    set             #gather information--> but which type
+          # e.g. searchsploit apach james  35513.py
+          # Download and modify the python script. 
+          # Verify that the script is working
+          # Put bash reverse shell as the payload and catch it from the host using nc. 
+          # Verify the shell echo $0
+          # If the terminal is looking for wrong directory,  copy and paste $PATH
+                export PATH=$PATH:/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:
+                          
+          echo $SHELL     #which shell? majority of time "rbash"
+          echo $PATH      #Where is it located?
+          set             #gather information--> but which type
 
-          
-          
-     
-     
+
    4.1 Linux     
       4.1.1 Ref
             https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
@@ -636,9 +633,10 @@ Tunneling
                   ssh -M -S /tmp/<target name> root@<IP ADDRESS> <TUNNEL COMMANDS -R or -L>
                          -M for master mode
                          -S control for socket path.
-                   -o 'ControlPath=/tmp/<target name>'
-                        to use it. 
-                   -M -S /tmp/s
+                   ssh -o 'ControlPath=/tmp/<target>' username@<IP address>
+                   ssh -o 'ControlPath=/tmp/<target>' student@127.0.0.1
+                   
+
            Configuration File Method:
                   /ssh_config
                   HostName machine1.example.org
