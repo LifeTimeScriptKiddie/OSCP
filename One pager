@@ -410,7 +410,7 @@ Contents
                list what sudo can do
              watch w
                logged in users
-        process Enumeration
+        System Enumeration
             ps aux
             ps -elf
             pstree   #tree view
@@ -422,8 +422,12 @@ Contents
                Restore deleted file.
                   cp /proc/<pid>/exe ./<restored_file_name>
             chkconfig          #sysV command
-        Services 
+            uname -a
+            cat /etc/*rel*
+            lsmod      #kernel module
+            date -u
             systemctl list-units --type service
+            cat .bash_histroy            # all current commands will be writtend in to upon exit. 
         Network 
             ifconfig -a
             ip addr
@@ -433,7 +437,16 @@ Contents
             ss
             rp -an
             route
-            
+        
+        logging data 
+            <command> | tee /file/path/here
+            ls -alrt | tee /tmp/ls_output
+        obfuscation
+            | %{$_ -replace 'a','b' -replace 'b','c' -replace 'c','d'} > translated.out certutil
+            | tr 'a-zA-Z0-9' 'b-zA-Z0-9a' > shifted.txt
+            | base64
+        Encryption
+            scp
                   
                
             
