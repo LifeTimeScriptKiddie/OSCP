@@ -205,6 +205,10 @@ Contents
                 sudo sslscan <IP>:443
                 nmap -sV --script=ssl-heartbleed <ip>
                 Certificate?
+            514 UDP:syslog TCP:rsyslog
+                Remote syslogin. 
+                grep "IncludeConfig" /etc/rsyslog.conf
+                  
             554-RTSP : Real Time Streaming Protocol
                 Statful (TCP)
                 IP-cameras, with potential GUI
@@ -480,6 +484,15 @@ Contents
              Easy with Nix vs Windows, native change of Access & Modify times
                 touch -c -t 201603051015 1.txt
                 touch -r 3.txt 1.txt
+            rsyslog
+               grep "IncludeConfig" /etc/rsyslog.conf
+               <facility>.<priority>
+                  kern.*
+                  mail.crit
+                  cron.!info,!debug
+                  *.*  @192.168.10.254:514         #remote server
+                  #mail.*
+            
                 
                  
       
