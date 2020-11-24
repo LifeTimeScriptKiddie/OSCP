@@ -350,13 +350,11 @@ Contents
               mysql -u<id> -p<password> -e 'show databases;'
 
 ////////////////////////////////Need to update////////////////////////////////////////////////////////////////////////////            
-6. Post-Exploitation && Privilege escalation
+4. Post-Exploitation && Privilege escalation
      Goal
      Restricted low-priv shell --> Unrestricted low-priv shell --> Unrestricted high-priv shell -->Get more info
-    6.1 Priviliege Escalation      
-      
           
-                                                                  
+                                                              
      Searchsploit for remote execution 
           # e.g. searchsploit apach james  35513.py
           # Download and modify the python script. 
@@ -470,11 +468,16 @@ Contents
                strings OR dd (for data files)
                more /var/log/syslog
                head/tail
+            Delete log files
+               rm -rf (/path/file)
+            Empty files
+               cat /dev/null > (/path/file)
+               echo > /var/log/btmp
             
                 
                  
       
-      4.1.9 Manual
+      4.1.10 Manual
          user enumeration
             groups
             ps aux     --> Search for odd program, then searchsploit. 
@@ -535,6 +538,9 @@ Contents
             ss
             rp -an
             route
+            ssh -M -S /tmp/s root@<IP ADDRESS> <TUNNEL COMMANDS -R or -L>
+               -o 'ControlPath=/tmp/s'
+               -M -S /tmp/s
         
         logging data 
             <command> | tee /file/path/here
