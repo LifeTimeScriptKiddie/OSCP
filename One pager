@@ -473,7 +473,13 @@ Contents
             Empty files
                cat /dev/null > (/path/file)
                echo > /var/log/btmp
-            
+            Cleaning Logs
+               egrep -v '10:49*| 15:15:15' auth.log > auth.log2; cat auth.log2 > auth.log; rm auth.log2 +
+               cp auth.log > auth.log2; sed -i 's/10.16.10.93/136.132.1.1/g' auth.log2; cat auth.log2 > auth.log +
+            Timestomp Nix
+             Easy with Nix vs Windows, native change of Access & Modify times
+                touch -c -t 201603051015 1.txt
+                touch -r 3.txt 1.txt
                 
                  
       
