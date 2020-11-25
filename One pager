@@ -627,12 +627,12 @@ Contents
                               stty rows <num> columns <cols>  
         
    4.2 Windows           
-        
+        Hidden -->scheduled tasks (schtasks) ->  process (tasklist) --> services(sc qc, service with no description) --> registry (RUN/RUN ONCE) --> auditpol(Be admin) --> 
            ref  : https://samsclass.info/123/proj10/px16-hashcat-win.htm
                   https://guif.re/windowseop
                   https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation
                   https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Methodology%20and%20Resources
-                  
+            
 
            Starts with whoami/priv
            
@@ -659,25 +659,108 @@ Contents
                   wmic netuse list full
                   net use    # to access shared resources. 
                   net view
-             Process
                   net start
+             Process
+                  hidden file
+                  
                   schtasks /query /fo LIST /v
+                  schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
+                 
                   tasklist /SVC
                   tasklist /v
+                  tasklist /svc |find /i "pid"
+                  
+                  query session
                   DRIVERQUERY  --look for programs (afd..)
+                     <check prefetch folder before execute wmic  c:\windows\prefetch>
+                  
+                  
+                  
                   wmic qfe get Caption,Description,HotFixID,InstalledOn
                   wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
                   wmic useraccount get name,sid
-                  wmic process get parentprocessid,commandline
+                  wmic process get name,processid,parentprocessid,sessionid
                   wmic process where processid=776 get parentprocessid, commandline
                   wmic service list status
                   wmic service list brief  
-                  sc qc upnphost
+                  wmic service get name,displayname,pathname,startmode |findstr /i "auto" |findstr /i /v "c:\windows\\" |findstr /i /v """
+                  dir "filename" /s
+                  
+                  icacls . # shows permission on the current folder. 
+                  
+                                   
                   get-service
                      get-service |where {$_.status -eq running}
+                  for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a
+                     services.msc --> search for items without description.
+                  reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch
+                  
+                  sc qc <service>     #get more information about service
+                  sc qc 
                   
                   
+                  Registry
+                     run keys, Run once keys 
+                        reg query HKLM\software\microsoft\windows\currentversion\run 
+                        reg query HKCU\software\microsoft\windows\currentversion\run 
+                     Run Once keys  # run once and remove itself.  
+                        reg query HKLM\software\microsoft\windows\currentversion\runOnce 
+                        reg query HKCU\software\microsoft\windows\currentversion\runOnce 
+                     service = process runs on background. svchost.  
+                        reg query HKLM\system\currentcontrolset\services 
+                        reg query HKLM\software\microsoft\windows NT\currentversion\winlogon 
+                        reg query HKLM\software\microsoft\windows\currentversion\explore\shell folders 
+                        reg query HKLM\software\microsoft\windows\currentversion\explore\user shell folders 
+                        
+                        
+                Audit logging?
+                Three types: Application log, security log, system log. 
+                         Application log: logged by application or prgorams  (developers)
+                         securit log: valid and invalid logon attempt , something suspicious
+                         system log: event logged by windows system component are predeterminded by windows 
+                   Auditpol --> have to be be 
+                     auditpol /get/category:*
+                     auditpol /get /category:* |findstr /i "success failure"
+                     auditpol /list /subcategory:"detailed Tracking","DS Access"
+                     auditpol /get /option:crashonauditfail
+                   Event log
+                      storatge
+                        C:\windows\system32\config\filetype.evtx/.evt
+                      webtutile el
+                      wmic ntevent where "logfile="<LOGNAME>" list full
+                      Get-Eventlog -List
+                   Determine PS version (bunch of ways)
+                      reg query hklm\software\microsoft\powershell\3\powershellengine\
+                      powershell -command "$psversiontable
+                   Determine if logging is set (PowerShell and WMIC)
+                     reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
+                     reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
+                     # 0 = no | 1 = errors | 2 = verbose
+
+                   WMIC Log Storage:
+                     %systemroot%\system32\wbem\Logs\``               
                    
+                   Find Files and Alter File attributes:
+                        forfiles /P c:\windows\system32 /S /D +05/14/2019
+                        wmic datafile where name='c:\\windows\\system32\\notepad.exe' get CreationDate, LastAccessed, LastModified
+                        copy /b filename.ext +,,
+                        $(Get-Item file.ext).lastaccesstime=$(date) |$(Get-Item test.txt).lastaccesstime=$(Get-Date "07/07/2004")
+                   Clear Event Logs:
+                        wevtutil clear-log Application
+                        Clear-Eventlog -Log Application, System
+                    Check event viewer
+                        open event viewer
+                              go to filter current log --> xml to see the format
+                        wevtutil qe system /c:5 /rd:false /f:text /q:"*[System[(EventID=104 or EventID=7040)]]"
+                           Microsoft Event IDs (Some Important Ones)
+                               4624/4625 successful/failed login
+                               4720 account created
+                               4672 administrator equivalent user logs on
+                               7045 Service creation
+                         wmic neteventlog get name
+                         
+                    
+                  
                   
 
         
