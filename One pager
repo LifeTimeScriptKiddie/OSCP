@@ -777,6 +777,40 @@ Contents
                     where /r C:\windows eventvwr.exe
              Download strings.exe 
                     https://docs.microsoft.com/en-us/sysinternals/downloads/strings
+                    
+                     Sysinternal tools 
+                           net use * http://live.sysinternals.com 
+               procmon     Advanced monitoring tool for Windows that shows real-time File System, Registry and Process/Thread activity 
+                Create a capture 
+                Filter for Data 
+               autoruns    Shows applications automatically started on boot as well as the Registry and file system locations for auto-start configurations 
+                   Allows users to jump to Registry locations 
+                   Allows for viewing of Scheduled Tasks, Services and Image Hijacks 
+               procexp     A task manager and system monitor which collects information on running processes with such features as Hierarchical view of processes, live cpu activity, ability to kill and suspend processes, display DLLs loaded, create process dumps, display handles and much more. 
+                   Shows processes in a tree format and color codes process types 
+                   Allows for suspending and killing processes 
+                   Can replace Windows Task Manger 
+               tcpview      A Windows program that will show you detailed listings of all TCP and UDP endpoints on your system, including the local and remote addresses and state of TCP connections 
+                   A Graphical (GUI) representation of the NETSTAT command with dynamic updates 
+                   Allows for sorting data by columns 
+                   Shows network connections that are stopping and starting in different colors 
+               psloggedon      Shows users currently logged onto a system 
+                   Can export data to a file 
+                   Can run against a list of machines 
+               logonsessions      While Psloggedon shows who is logged on and what time he/she logged on, loggonsessions shows how that user logged on. 
+                   List sessions and processes running under each user 
+
+               pslist      A command line tool for gathering process information 
+                   Can refresh the tool for a specified period of time 
+                   Can be run against multiple machines 
+
+               psinfo      A command-line tool that gathers key information about the local or remote Windows system, including the type of installation, kernel build, registered organization and owner, number of processors and their type, amount of physical memory, the install date of the system, and if its a trial version, the expiration date 
+               handle 
+               Displays open file references 
+                   Can be used to determine what a suspicious process is doing based on the dll files the process has a handle to 
+                   Can be used to terminate a handle to a file 
+
+ 
              Verify that AutoElevate is "True"
                     strings64.exe -accepteula C:\Windows\System32\eventvwr.exe | findstr /i autoelevate
       
