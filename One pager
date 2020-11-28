@@ -69,6 +69,7 @@ Contents
             22 SSH
                 nc <ip> <port>  --> search for protocol http://www.openssh.com/txt/rfc4253.txt 
                 ssh ip
+		ssh -i <private key> id@<ip_address>
                 ref: https://weberblog.net/ssh-key-fingerprints/ 
                      https://unix.stackexchange.com/questions/247612/ssh-keeps-skipping-my-pubkey-and-asking-for-a-password/247614 
                      https://superuser.com/questions/929566/sha256-ssh-fingerprint-given-by-the-client-but-only-md5-fingerprint-known-for-se 
@@ -476,6 +477,12 @@ Contents
 
             
             netstat -antp
+	    cat /etc/iptables/rules.*
+	    port knocking
+	    	cd /etc/init.d/ && ls -lisa |grep knoc*
+		for i in 571 290 911; do nmap -Pn -p $i --host-timeout 201 --max-retries 0 10.10.10.43; done
+		nmap port scan.
+
             
             uname -a
             cat /etc/version
