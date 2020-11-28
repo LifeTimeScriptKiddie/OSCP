@@ -38,6 +38,15 @@ Contents
 2.0 Linux OS
 	Look for example
 	    curl cht.sh/<command>
+	vi/vim trick
+		:s/foo/bar/g 	Change each 'foo' to 'bar' in the current line.
+		:%s/foo/bar/g 	Change each 'foo' to 'bar' in all the lines.
+		:5,12s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive).
+		:'a,'bs/foo/bar/g 	Change each 'foo' to 'bar' for all lines from mark a to mark b inclusive (see Note below).
+		:'<,'>s/foo/bar/g 	When compiled with +visual, change each 'foo' to 'bar' for all lines within a visual selection. Vim automatically appends the visual selection range ('<,'>) for any ex command when you select an area and enter :. Also, see Note below.
+		:.,$s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
+		:.,+2s/foo/bar/g 	Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
+		:g/^baz/s/foo/bar/g 	Change each 'foo' to 'bar' in each line starting with 'baz'. 
          
       
 
@@ -79,13 +88,15 @@ Contents
                 hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet
                 patator
                                                
-            25 SMTP
+            25 SMTP   #send mails
                 Server to Server service.  Users receives/sends emails suing IMAP or POP3. 
                 Then routed to the SMTP server to communicate to another server. Has database. 
                 Cannot retrieve any emails, only can send email. 
                     http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
                 After identify username,
                   https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
+		smtp-user-enum
+		
             53 -DNS
                nslookup - server <ip>
                nslookup <ip>
@@ -126,12 +137,12 @@ Contents
                 MS14-068
                 https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
                 
-            110 Pop3
+            110 Pop3   #read emails
                 telnet <ip> 110
                 USER pkong@<ip>
                 PASS admin
                 list   #List all emails
-                retr5  #Retrieve email number 5. 
+                retr 5  #Retrieve email number 5. 
             111 Rpcbind
                 RFC 1833
                 Can be used to look for NFS-shares.
@@ -646,10 +657,12 @@ Contents
             https://raw.githubusercontent.com/reider-roque/linpostexp/master/linprivchecker.py
             https://raw.githubusercontent.com/jondonas/linux-exploit-suggester-2/master/linux-exploit-suggester-2.pl
             https://sushant747.gitbooks.io/total-oscp-guide/content/privilege_escalation_windows.html
-            6.1.1 Restriced Shell excape  
-           https://www.hacknos.com/rbash-escape-rbash-restricted-shell-escape/
-           https://d00mfist.gitbooks.io/ctf/content/escaping_restricted_shell.html
-           https://guif.re/linuxeop
+      
+      6.1.1 Restriced Shell excape  
+	       https://guif.re/linuxeop
+               https://www.hacknos.com/rbash-escape-rbash-restricted-shell-escape/
+               https://d00mfist.gitbooks.io/ctf/content/escaping_restricted_shell.html
+          
                   $ bin/sh
                   $ echo $PATH
                   $ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
@@ -673,7 +686,7 @@ Contents
                
                   
                   
-             nc interactive shell
+             nc interactive shell        #use without rlwrap
                         # In reverse shell 
                               python -c 'import pty; pty.spawn("/bin/bash")' 
                               Ctrl-Z 
