@@ -88,8 +88,9 @@ Contents
                nslookup - server <ip>
                nslookup <ip>
                DNS zone transfer -TCP
-                   dig axfr @ip_address dns_name
-                  
+                   dig axfr dns_name  @ip_address
+                   update /etc/hosts 
+                
                
                
             69 - TFTP
