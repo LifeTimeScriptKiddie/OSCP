@@ -480,6 +480,19 @@ Contents
             uname -a
             cat /etc/version
             dmesg|grep linux
+	    bash process monitor
+	    	#!/bin/bash
+		IFS=$'\n'
+		old_process=$(ps -eo pid,user,command)
+		while true; do
+		  new_process=$(ps -eo pid,user,command)
+		  diff <(echo "$old_process") <(echo "$new_process")
+		  sleep 1
+		  old_process=$new_process
+		done
+
+
+	    
       4.1.9 Logs/stuff
                ls -al /lib/systemd/system
                ls -latr /proc/1/exe
