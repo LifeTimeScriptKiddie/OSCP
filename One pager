@@ -469,6 +469,11 @@ Contents
          #search for software that is running as root
             ps aux
             ps -elf
+	    ps -eo user,command,pid
+	    ps -eo command
+	    	    IFX=$'\n'
+		    for i in $(ps -eo command);do echo $i ;done
+
             
             netstat -antp
             
