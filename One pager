@@ -33,6 +33,8 @@ Contents
                cp *.nse /usr/share/nmap/scripts
                nmap --script-updatedb
     1.3 AutoRecon — https://github.com/Tib3rius/AutoRecon
+    1.4 gobuster dir -u https://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -l -t 30 -e -k 
+    
     
                
 2.0 Linux OS
@@ -129,7 +131,7 @@ Contents
                         medusa -h 192.168.1.101 -u admin -P wordlist.txt -M http -m DIR:/test -T 10
                   curl -i -X OPTIONS <ip>
                   curl -X PUT http://10.10.10.15/pkong.txt -d@test.txt # putting Pkong.txt with the data of test.txt
-		  gobuster dir -u https://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt -k
+		  
 
             88- Kerberos
                 Network Authentication protocol. 
