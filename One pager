@@ -125,6 +125,11 @@ Contents
             69 - TFTP
                 ftp-server
                 UDP
+		
+	    79- Solaris finger
+	    	https://github.com/pentestmonkey/finger-user-enum.git
+			https://github.com/pentestmonkey/finger-user-enum.git
+			
             80- HTTP
                 .htaccess can password protect certain directories. 
                     Create a directory which will be password-protected. 
@@ -706,7 +711,8 @@ Contents
                  Once obtain passwd + shadow
                         unshadow passwd shadow > hash
                         john --wordlist=/usr/share/wordlists/rockyou.txt hash
-                        
+                        ./hashcat -m 7400 hases/sunday /usr/share/wordlists/rockyou.txt 
+
                
                   
                   
@@ -1202,6 +1208,7 @@ Password Brute Forcers
     BruteX — https://github.com/1N3/BruteX
     Hashcat — https://hashcat.net/hashcat/
     John the Ripper — https://www.openwall.com/john/
+    
 
 Post-Exploitation / Privilege Escalation
 
