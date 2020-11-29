@@ -303,6 +303,12 @@ Contents
 
 
 5.0 Web exploits
+      Develop a webpage map
+      	10.10.10.10
+		10.10.10.10/index
+			10.10.10.10/index/index.html
+		10.10.10.10/robots.txt
+	
       Bruteforce
       	patator
 	hydra
