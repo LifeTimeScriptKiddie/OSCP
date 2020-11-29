@@ -308,6 +308,12 @@ Contents
 		10.10.10.10/index
 			10.10.10.10/index/index.html
 		10.10.10.10/robots.txt
+      Wordpress
+      	wpsscan
+		wpscan --url http://10.10.10.88/webservices/wp/ -e ap --plugins-detection aggressive
+	vane
+		 ruby ./vane.rb --url http://10.10.10.88/webservices/wp --enumerate p
+
 	
       Bruteforce
       	patator
