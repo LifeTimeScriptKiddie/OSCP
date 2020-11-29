@@ -500,6 +500,7 @@ Contents
                   docker run -v /etc/:/mnt -it alpine
                   cd /mnt
                   cat /etc/shadow   
+ 	    sudo -u <another_user>
       4.1.4 capability
             getcap -r / 2>/dev/null
             
