@@ -43,7 +43,8 @@ Tmux screen 1: ./nmapAutomator <ip> All
 Tmux screen 2: nmap -sC -sV -sT -p- <ip>
 
 Web
-gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
+	gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
+	wfuzz -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hh 158607 http://bart.htb/FUZZ
 
 Linux
 cd ~
