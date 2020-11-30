@@ -1,6 +1,6 @@
 Contents
    0. Penetration Patterns   
-   1. Enumeration tools
+   1.0 Enumeration tools
    2.0 Linux OS
    3.0 Windows OS   
    4.0 Ports information
@@ -14,12 +14,38 @@ Contents
    4. Exploit                   # get low privilige shell
    5. Post-Exploit&&Privilege Escalation  # owned the target
       search for other users, creds, network surface, processes, kernal version, 
+      
+0.1 My flow
+Tmux screen 1: ./nmapAutomator <ip> All
+Tmux screen 2: nmap -sC -sV -sT -p- <ip>
+
+web
+gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
+
+linux
+	cd ~
+	which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
+	cat /etc/passwd
+	sudo -l
+	su -
+	find / -perm /4000 -ls 2>/dev/null        
+	find / -perm /2000 -ls 2>/dev/null        
+	id
+	ps aux
+	ps -elf
+	ps -eo user,command,pid
+	automated tools
+windows
+	Hidden
+	schtasks
+	tasklist
+	sc qc
+	service with no description
+	registry (RUN/RUN ONCE)
+	auditpol(Be admin)
 
 
-    
-
-
-1. Enumeration tools
+1.0 Enumeration tools
     1.1  Nmap: 
         'nmap -sC -sV -oN nmap.txt <ip> -p-'
         locate 
@@ -471,7 +497,9 @@ Contents
             https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
             https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
             http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
-                        
+      
+      which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
+      
       4.1.2 SUID/SGID  
          user must have execute permission
             find / -perm /4000 -ls 2>/dev/null        #look for x on the user execution bit.  #USER ID
@@ -1236,6 +1264,7 @@ Post-Exploitation / Privilege Escalation
     
     Windows Privilege Escalation Awesome Scripts (WinPEAS) — https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS
     Linux Privilege Escalation Awesome Script (LinPEAS) — https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS
+    pspy    https://github.com/DominicBreuker/pspy
     GTFOBins (Bypass local restrictions) — https://gtfobins.github.io/
     sudo_killer — https://github.com/TH3xACE/SUDO_KILLER
     https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md
