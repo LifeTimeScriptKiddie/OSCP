@@ -144,7 +144,7 @@ windows
                nslookup - server <ip>
                nslookup <ip>
                DNS zone transfer -TCP
-                   dig axfr dns_name  @ip_address
+                   dig axfr  @ip_address dns_name 
                    update /etc/hosts 
                 
                
@@ -205,6 +205,10 @@ windows
                 nmap <ip> --script=msrpc-enum
                     https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
             139/ 445 SMB SAMBA
+	    https://book.hacktricks.xyz/pentesting/pentesting-smb
+	    smbmap -H <IP>
+	    
+	    enum4linux -a <ip>
              2020 Kali default setting does not allow the legacy SMB protocols. Change it by /etc/samba/smb.conf  and add "client min protocol = LANMAN1" to the global section.
             
                 smbclient -L <ip>
