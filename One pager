@@ -1277,7 +1277,10 @@ r2 ./binary
 	ltrace 
 	    
 	 
-    
+Hash
+https://hashcat.net/wiki/doku.php?id=example_hashes
+kdbx - keepass2john
+
 11.	Extra info
 Reporting Frameworks
     Dradis — https://dradisframework.com/academy/industry/compliance/oscp/
