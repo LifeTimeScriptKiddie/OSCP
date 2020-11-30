@@ -477,6 +477,8 @@ https://github.com/jeroennijhof/vncpwd
 7.1.	Enum
 gobuster dir -u http://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -l -t 30 -e -k 
 gobuster dir -u http://10.10.10.79 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
+gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://10.10.10.81 -o dirbust-bart.htb -s 204,301,302,307 
+
     	gobuster with proxy
 	   Burpsuite: proxy--> options --> proxy listener --> add
 	   	Binding - Bind to port: < desired port >
