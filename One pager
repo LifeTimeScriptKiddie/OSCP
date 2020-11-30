@@ -469,11 +469,15 @@ https://github.com/jeroennijhof/vncpwd
 		
 
 7.	Web exploits
-      Develop a webpage map
+	Develop a webpage map
       	10.10.10.10
 		10.10.10.10/index
 			10.10.10.10/index/index.html
 		10.10.10.10/robots.txt
+		
+	Append /etc/hosts
+		<ip> <dns_name>
+		
 7.1.	Enum
 gobuster dir -u http://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -l -t 30 -e -k 
 gobuster dir -u http://10.10.10.79 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
