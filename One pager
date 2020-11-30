@@ -249,6 +249,22 @@ nc <ip> <port>  --> search for protocol http://www.openssh.com/txt/rfc4253.txt
 ssh ip
 ssh -i <private key> id@<ip_address>
 
+ssh login with a key
+	generate a key
+		ssh-keygen -t rsa
+	send the public key to the target 
+		id_rsa.pub
+	go to home directory
+		cd ~
+	append the key to /.ssh/authorized_keys
+		echo 'id_rsa.pub context' >> /var/www/.ssh/authorized_keys 
+	log in to the server
+	ssh -i <id>@<ip_address>
+
+	
+	
+
+
 ref: https://weberblog.net/ssh-key-fingerprints/ 
 https://unix.stackexchange.com/questions/247612/ssh-keeps-skipping-my-pubkey-and-asking-for-a-password/247614 
 https://superuser.com/questions/929566/sha256-ssh-fingerprint-given-by-the-client-but-only-md5-fingerprint-known-for-se 
@@ -508,6 +524,31 @@ or 1=1 --
 ") or ("x"="x	      
 ' or username LIKE '%admin% 
 
+example
+     mysql (to run MySQL)  
+     show databases;  
+     use information_schema; (database name)  
+     show tables;  
+     select * from columns; (table in database)  
+     use session; (database name)  
+     show tables;  
+     select * from Tires; (table in database)  
+     select tired, name from Tires; (select two tables in Tires)  
+     select * from user;  
+     SELECT * FROM session.car 
+        Selecting car from session table. (Specifying) 
+        Use session; 
+        SHOW Tables; 
+        DESCRIBE car; 
+        SELECT * FROM car; 
+        SELECT * FROM car UNION SELECT tireid,name,size,cost FROM Tires; 
+        SELECT * FROM car UNION SELECT tireid,name,size,cost,1,2 FROM Tires; 
+    Inn 
+        Select cardid, name, (select sum(cost) from Tires where name= 'goodyear') from car where name = 'ford'; 
+
+
+
+ 
          https://www.exploit-db.com/papers/12975
          https://dev.mysql.com/doc/refman/8.0/en/select.html
          https://gracefulsecurity.com/sql-injection-exploitation/
