@@ -61,9 +61,12 @@ ps -eo user,command,pid
 automated tools
 
 Windows
-Hidden 
+Hidden   (ADS)
 	dir /r
 	dir -force
+	powershell(get-content <file> -Stream <stream name>)
+	powershell(get-content <file> -Stream <stream name>).substring(0,16)
+	
 scheduled tasks (schtasks, strat from top)
 schtasks /query /fo LIST /v
 schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
