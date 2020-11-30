@@ -62,8 +62,18 @@ automated tools
 
 Windows
 Hidden   (ADS)
+ 
 	dir /r
 	dir -force
+	notepad kids:hidden.txt 
+	get-content .\reminder.txt 
+	get-content .\reminder.txt -Stream secret.info 
+	gc .\reminder.txt:secret.info 
+	gc .\test.txt 
+	gc .\text.txt -stream secret.vbs 
+	notepad .\test.txt:secret.vbs 
+	wscript .\test.txt:secret.vbs 
+	get-filehash .\test.txt -algorithm md5 
 	powershell(get-content <file> -Stream <stream name>)
 	powershell(get-content <file> -Stream <stream name>).substring(0,16)
 	
