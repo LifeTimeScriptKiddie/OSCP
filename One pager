@@ -86,17 +86,49 @@ Hidden   (ADS)
 scheduled tasks (schtasks, strat from top)
 schtasks /query /fo LIST /v
 schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
+	
+	
 	process (tasklist /v)
 tasklist /SVC
 tasklist /v
 tasklist /svc |find /i "pid"
+	
+	
 	services (wmic, sc qc, services with no description)
 get-service
 get-service |where {$_.status -eq running}
 for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a
 services.msc --> search for items without description.
 reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch                
- sc qc <service>     #get more information about service
+sc qc <service>     #get more information about service
+wmic service get name,displayname,pathname,startmode |findstr /i "auto" |findstr /i /v "c:\windows\\" |findstr /i /v """
+wmic service list full
+
+
+	
+	
+	Auditpol(Be admin)
+auditpol /get/category:*
+auditpol /get /category:* |findstr /i "success failure"
+auditpol /list /subcategory:"detailed Tracking","DS Access"
+
+Event logGING
+storage
+C:\windows\system32\config\filetype.evtx/.evt
+webtutile el
+wmic ntevent where "logfile="<LOGNAME>" list full
+Get-Eventlog -List
+Determine PS version (bunch of ways)
+reg query hklm\software\microsoft\powershell\3\powershellengine\
+powershell -command "$psversiontable
+
+reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
+reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
+    # 0 = no | 1 = errors | 2 = verbose
+
+
+
+
 
 	registry (RUN/RUN ONCE)
                   Run keys, Run once keys 
@@ -110,19 +142,11 @@ reg query HKLM\system\currentcontrolset\services
 reg query HKLM\software\microsoft\windows NT\currentversion\winlogon 
 reg query HKLM\software\microsoft\windows\currentversion\explore\shell folders 
 reg query HKLM\software\microsoft\windows\currentversion\explore\user shell folders 
-	Auditpol(Be admin)
-auditpol /get/category:*
-auditpol /get /category:* |findstr /i "success failure"
-auditpol /list /subcategory:"detailed Tracking","DS Access"
-Event log
-storage
-C:\windows\system32\config\filetype.evtx/.evt
-webtutile el
-wmic ntevent where "logfile="<LOGNAME>" list full
-Get-Eventlog -List
-Determine PS version (bunch of ways)
-reg query hklm\software\microsoft\powershell\3\powershellengine\
-powershell -command "$psversiontable
+	UAC setting
+reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+
+
+
 Determine if logging is set (PowerShell and WMIC)
 reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
 reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
@@ -947,6 +971,7 @@ which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/de
         
 8.2.	 Windows           
         Hidden 
+	
 	scheduled tasks (schtasks, strat from top)
 		  schtasks /query /fo LIST /v
                   schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
@@ -962,6 +987,12 @@ which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/de
                   reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch                
                   sc qc <service>     #get more information about service
                   sc qc 
+	
+	permission on the box
+		icacls .
+	
+	
+	
 	registry (RUN/RUN ONCE)
                   run keys, Run once keys 
 	                reg query HKLM\software\microsoft\windows\currentversion\run 
