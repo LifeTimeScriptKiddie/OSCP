@@ -47,6 +47,8 @@ Web
 	wfuzz -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hh 158607 http://bart.htb/FUZZ
 
 Linux
+for i in {1..254} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done
+
 ps $$
 cd ~
 which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
