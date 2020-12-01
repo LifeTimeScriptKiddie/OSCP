@@ -550,6 +550,7 @@ http://172.20.29.77/login.php?username=tom' OR 1='1 & passwd=tom ' or 1='1
 
 example
      mysql (to run MySQL)  
+     mysql --user=<userID> --password=<PASSWORD>
      show databases;  
      use information_schema; (database name)  
      show tables;  
