@@ -47,6 +47,7 @@ Web
 	wfuzz -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hh 158607 http://bart.htb/FUZZ
 
 Linux
+ps $$
 cd ~
 which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
 cat /etc/passwd
