@@ -471,6 +471,7 @@ https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
 		impacket
 			getadusers.py -all  -dc-ip <ip>  <dns>/<id>
 			psexec.py <dns>/<id>@<ip>              #works only with the admin account
+		gpp-decrypt      # decrypt gpp password
        
 443- HTTPS
                 OpenSSL 1.0.1-1.0.1f Vulnerable
