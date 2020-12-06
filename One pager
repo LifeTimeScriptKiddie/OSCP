@@ -9,7 +9,7 @@
       
 2.	My flow
 Tmux screen 1: ./nmapAutomator <ip> All
-Tmux screen 2: sleep 600; autorecon ip
+Tmux screen 2: sleep 600; nmap -sC -sV -oA full -p- 
 
 Web
 	gobuster dir -u <ip> -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -o gobuster.log -t 30
