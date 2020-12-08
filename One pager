@@ -299,13 +299,16 @@ hydra -l root -P /root/SecLists/Passwords/10_million_password_list_top_100.txt 1
 patator
                                                
 25 SMTP   #send mails
-Server to Server service.  Users receives/sends emails suing IMAP or POP3. 
-Then routed to the SMTP server to communicate to another server. Has database. 
-Cannot retrieve any emails, only can send email. 
-http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
-After identify username,
-https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
-smtp-user-enum
+	Server to Server service.  Users receives/sends emails suing IMAP or POP3. 
+	Then routed to the SMTP server to communicate to another server. Has database. 
+	Cannot retrieve any emails, only can send email. 
+	http://null-byte.wonderhowto.com/how-to/hack-like-pro-extract-email-addresses-from-smtp-server-0160814/          
+	After identify username,
+	https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py
+	smtp-user-enum
+	telnet <ip> 25
+		vrfy sys
+		vrfy 
 		
 53 -DNS
 nslookup  
@@ -356,12 +359,23 @@ Common for Windows Domain controller.
 MS14-068
 https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
                 
-110 Pop3   #read emails
-                telnet <ip> 110
-                USER pkong@<ip>
-                PASS admin
-                list   #List all emails
-                retr 5  #Retrieve email number 5. 
+110 Pop3   #read emails      
+	Do:
+	nmap --script "pop3-capabilit* or  pop3-ntlm-*" -sV -p 110 <ip>
+	nc -nv <IP> 110
+	hydra -l USERNAME -P /path/to/passwords.txt -f <IP> pop3 -V
+	
+	POP commands:
+		  USER uid           Log in as "uid"
+		  PASS password      Substitue "password" for your actual password
+		  STAT               List number of messages, total mailbox size
+		  LIST               List messages and sizes
+		  RETR n             Show message n
+		  DELE n             Mark message n for deletion
+		  RSET               Undo any changes
+		  QUIT               Logout (expunges messages if no RSET)
+		  TOP msg n          Show first n lines of message number msg
+
 111 Rpcbind
                 RFC 1833
                 Can be used to look for NFS-shares.
@@ -475,9 +489,12 @@ https://www.pentestpartners.com/security-blog/how-to-kerberoast-like-a-boss/
 
 993 IMAP encrypted
 995 POP3 Encryption
-                110 is POP3 non-encrypted
-                25, 465
+	Do:
 
+	
+		
+
+		
 1025 - NSF or IIS
             1030/1032/1033/1038
             Used by the RPC within Windows Domain.
@@ -540,6 +557,10 @@ gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u 
 Wordpress
       	wpsscan
 		wpscan --url http://10.10.10.88/webservices/wp/ -e ap --plugins-detection aggressive
+		wpscan -u https://brainfuck.htb/ --disable-tls-checks --enumerate p --enumerate t --enumerate u
+			--disable-tls-checks: to mitigate ssl error
+			--enumerate p : to search plugins
+			
 	vane
 		 ruby ./vane.rb --url http://10.10.10.88/webservices/wp --enumerate p
 Bruteforce
