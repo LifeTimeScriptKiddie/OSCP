@@ -137,7 +137,7 @@ Windows
 	Clear Event Logs:
 	wevtutil clear-log Application
 	Clear-Eventlog -Log Application, System
-	Check event viewer
+	Check event viewer/
 	open event viewer
 	go to filter current log --> xml to see the format
 	wevtutil qe system /c:5 /rd:false /f:text /q:"*[System[(EventID=104 or EventID=7040)]]"
