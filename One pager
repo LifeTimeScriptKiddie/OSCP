@@ -36,7 +36,11 @@ Linux
 	ps -eo user,command,pid
 	automated tools
 
-	Windows
+Windows
+	Writable folder - Almost always. 
+		C:\Windows\System32\spool\drivers\color\
+	
+	
 	Hidden   (ADS)
 
 		dir /r
