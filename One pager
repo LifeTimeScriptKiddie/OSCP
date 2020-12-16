@@ -593,7 +593,8 @@ hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k
 
 
 
-
+Example 0. 
+	' ORDER BY 1-- ' ORDER BY 2-- ' ORDER BY 3-- # and so on until an error occurs 
 
 
 Example 1a.  Identify injectable area. Verify output.
