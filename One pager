@@ -683,6 +683,7 @@ example
 	 
 7.4 XSS scripting
 	<img src="http://10.10.14.9:8000/poc.txt" alt="image">
+	Identify where the uploaded file renders
 	
 	 
 	 
