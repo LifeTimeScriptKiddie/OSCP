@@ -684,6 +684,11 @@ example
 7.4 XSS scripting
 	<img src="http://10.10.14.9:8000/poc.txt" alt="image">
 	Identify where the uploaded file renders
+	
+	
+	SSTI Server Side Template Injection
+		Place {{10*10}} in input box. 
+		Verify it is executed
 	https://github.com/payloadbox/ssti-payloads
 	https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection#tools
 	
