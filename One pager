@@ -4,7 +4,7 @@
    2. Info gathering    # How much do I know regarding services which are running on the target?
    3. Vulnerability Research    #explore identified services and the use of the target system
    4. Exploit                   # get low privilege shell
-   5. Post-Exploit&&Privilege Escalation # owned the target
+   5. Post-Exploit&&Privilege Escalation # owned the target, Password reuse is a real thing. 
       search for other users, creds, network surface, processes, kernel version,
       
 2.	My flow
