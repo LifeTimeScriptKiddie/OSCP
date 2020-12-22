@@ -277,14 +277,20 @@ ssh ip
 ssh -i <private key> id@<ip_address>
 
 ssh login with a key
+	Make a directory
+		mkdir ~/.ssh
+		cd ~/.ssh
 	generate a key
-		ssh-keygen -t rsa
-	send the public key to the target 
-		id_rsa.pub
-	go to home directory
-		cd ~
+		ssh-keygen -f id_rsa
 	append the key to /.ssh/authorized_keys
-		echo 'id_rsa.pub context' >> /var/www/.ssh/authorized_keys 
+		cat id_rsa.pub > authorized_keys
+	Copy the private key from the target to host. 
+		cat id_rsa 
+		then copy from TARGET to HOST.
+	Change id_rsa priviliege
+		chmod 600 id_rsa (from the host)
+
+			
 	log in to the server
 	ssh -i <id>@<ip_address>
 	
