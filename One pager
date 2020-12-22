@@ -885,6 +885,8 @@ which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/de
 		done
     
 8.1.8.	Logs/stuff
+		/var/log
+		*backup
                ls -al /lib/systemd/system
                ls -latr /proc/1/exe
                stat /sbin/init
@@ -941,6 +943,7 @@ which awk perl python ruby gcc cc vi vim nmap find netcat nc wget tftp ftp 2>/de
 8.1.9.	Manual
          user enumeration
             groups
+	    	lxd -https://www.hackingarticles.in/ai-web-2-vulnhub-walkthrough/
             ps aux     --> Search for odd program, then searchsploit. 
                Linux Local Privilege Escalation via SUID /proc/pid/mem Write
                https://git.zx2c4.com/CVE-2012-0056/about/
@@ -1566,12 +1569,6 @@ kdbx - keepass2john
 
 
 11.	Extra info
-Reporting Frameworks
-    Dradis — https://dradisframework.com/academy/industry/compliance/oscp/
-    Serpico — https://github.com/SerpicoProject/Serpico
-
-Report Template
-    Created by whoisflynn — https://github.com/whosiflynn/OSCP-Exam-Report-Template
 
 File Transfers
 
