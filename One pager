@@ -34,6 +34,8 @@ Linux
 	ps aux
 	ps -elf
 	ps -eo user,command,pid
+	check /var/log
+	check backup files
 	automated tools
 
 Windows
