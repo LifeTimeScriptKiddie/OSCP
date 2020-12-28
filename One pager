@@ -1481,7 +1481,13 @@ ref: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-setti
 
          powershell -exec bypass -command "& { Import-Module .\39719.ps1; Invoke-MS16-032; }" 
        
-             
+
+
+
+
+Exploits!!
+
+
 Windows Kernel
 Windows Server 2003 SP2
       https://github.com/Re4son/Churrasco
@@ -1530,7 +1536,10 @@ Mongo use json format
 		db.tasks.find()
 	/tmp/pkong -p
 	id   #check euid
-	
+
+
+Redis
+https://github.com/n0b0dyCN/redis-rogue-server
 
 9.	Tunneling
       Local Port Forward
