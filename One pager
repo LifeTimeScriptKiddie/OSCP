@@ -266,10 +266,17 @@ Powershell command
 6.2.	Common ports
 
 21 FTP
-                ftp <ip>
-                nc <ip> <port>
-                anonymous:anoymous
-                binary and ascii mode?
+        ftp <ip>
+        nc <ip> <port>
+        anonymous:anoymous
+        binary and ascii mode?
+	Download all
+		wget -m --user=username --password=password ftp://ip.of.old.host
+		OR
+		prompt 
+		mget *
+		
+		
 
 22 SSH
 nc <ip> <port>  --> search for protocol http://www.openssh.com/txt/rfc4253.txt 
