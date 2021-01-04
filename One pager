@@ -7,6 +7,10 @@
    5. Post-Exploit&&Privilege Escalation # owned the target, Password reuse is a real thing. 
       search for other users, creds, network surface, processes, kernel version,
       
+      
+      
+      
+      
 2.	My flow
 Tmux screen 1: ./nmapAutomator <ip> All
 Tmux screen 2: sleep 600; nmap -sC -sV -oA full -p- 
